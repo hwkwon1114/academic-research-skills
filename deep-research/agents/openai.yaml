@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deep Research"
+  short_description: "Research engineering and ML literature"
+  default_prompt: "Use $deep-research to research a topic, compare methods, or map the literature."

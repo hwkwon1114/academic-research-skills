@@ -1,0 +1,4 @@
+interface:
+  display_name: "Academic Paper Reviewer"
+  short_description: "Review academic papers and revisions"
+  default_prompt: "Use $academic-paper-reviewer to review a manuscript or verify revisions."
