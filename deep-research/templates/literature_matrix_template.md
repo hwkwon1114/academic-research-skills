@@ -3,6 +3,14 @@
 ## Purpose
 Source x Theme cross-tabulation for systematic evidence mapping. Used by the synthesis_agent to organize evidence before writing the synthesis narrative.
 
+For physics-heavy or representation-sensitive topics, the matrix must also capture the upstream constraints that shape the literature:
+- data source / acquisition regime
+- fidelity level
+- acquisition cost
+- representation type
+- validation scope
+- bottleneck type (representation vs method)
+
 ## Matrix Structure
 
 ### Basic Matrix
@@ -35,11 +43,25 @@ Source x Theme cross-tabulation for systematic evidence mapping. Used by the syn
 ```markdown
 ## Extended Literature Matrix
 
-| Source | Method | Sample | Theme A: [name] | Theme B: [name] | Quality |
-|--------|--------|--------|-----------------|-----------------|---------|
-| Author1 (2024) | RCT, N=500 | University students, US | "Finding X was significant (p<.001)" — Supports | Not addressed | A |
-| Author2 (2023) | Case study, N=3 institutions | Asian universities | "Institution A showed..." — Supports | "However, in context B..." — Partial | C |
-| Author3 (2022) | Meta-analysis, k=42 | Global | "Pooled effect size d=0.45" — Strong support | "Subgroup analysis revealed..." — Mixed | A |
+| Source | Method Family | Data Source | Fidelity | Acquisition Cost | Representation | Validation Scope | Bottleneck Type | Theme A: [name] | Theme B: [name] | Quality |
+|--------|---------------|-------------|----------|------------------|----------------|------------------|-----------------|-----------------|-----------------|---------|
+| Author1 (2024) | FNO | High-fidelity solver | High | Expensive GPU-hours | Field / operator | Simulation only | Representation | "Finding X..." — Supports | Not addressed | A |
+| Author2 (2023) | GP surrogate | Mixed simulation + experiments | Mixed | Expensive experiments, cheap low-fi sim | Parametric geometry | Sim + hardware | Method | "Institution A showed..." — Supports | "However..." — Partial | B |
+| Author3 (2022) | DeepONet | Archived simulation data | Medium | Moderate | Operator | Simulation only | Representation | "Subgroup analysis..." — Mixed | Not addressed | A |
+```
+
+### Physics / Representation Add-On Table
+
+Use this compact add-on when the synthesis needs a dedicated upstream-constraints view:
+
+```markdown
+## Acquisition / Representation Matrix
+
+| Source | Physics Regime | Data Source | Fidelity Ladder Position | Representation Type | Main Bottleneck | Notes |
+|--------|----------------|-------------|--------------------------|---------------------|-----------------|------|
+| Author1 (2024) | Elliptic PDE | High-fidelity FEM | High | Mesh -> operator | Representation | Strong solver, weak transfer across discretizations |
+| Author2 (2023) | Combustion process | Multimodal sensors + simulation | Mixed | Sensor fusion | Acquisition | Labels expensive, instrumentation partial |
+| Author3 (2022) | Topology optimization | Synthetic + reduced-order solver | Low/medium | Latent shape | Method | Encoding adequate, optimization logic weak |
 ```
 
 ### Convergence Summary
@@ -83,3 +105,5 @@ Source x Theme cross-tabulation for systematic evidence mapping. Used by the syn
 - Convergence Summary should directly inform the synthesis narrative
 - Gap Identification feeds into the Discussion section
 - Update the matrix as new sources are added — it is a living document
+- For physics-heavy topics, fill in **Data Source**, **Fidelity**, **Acquisition Cost**, **Representation**, and **Bottleneck Type** before writing the synthesis
+- If the bottleneck is clearly representation or acquisition rather than method family, make that visible in the matrix instead of hiding it inside theme notes

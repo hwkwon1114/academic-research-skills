@@ -23,7 +23,7 @@ A comprehensive suite of Claude Code skills for academic research, covering the 
 
 ## Features
 
-- **Deep Research** — 13-agent research team with Socratic guided mode + systematic review / PRISMA + SCR Loop + **intent detection** + **dialogue health monitoring** + **optional cross-model DA**
+- **Deep Research** — ML-for-engineering research workflow with **conditional routing**: physics-heavy topics start from physics system, data acquisition, fidelity, and representation; explicit method-comparison requests keep a direct method-family path
 - **Academic Paper** — 12-agent paper writing with Style Calibration, Writing Quality Check, LaTeX output hardening, visualization, revision coaching, and citation conversion
 - **Academic Paper Reviewer** — Multi-perspective peer review with 0-100 quality rubrics (EIC + 3 dynamic reviewers + Devil's Advocate with **concession threshold protocol** + **attack intensity preservation** + **optional cross-model review**)
 - **Academic Pipeline** — Full 10-stage pipeline orchestrator with adaptive checkpoints, claim verification, material passport, and **optional cross-model integrity verification**
@@ -123,7 +123,7 @@ See the complete artifacts from a real 10-stage pipeline run — including **pee
 |-------------|-------------|--------------|--------------------------|
 | `deep-research` socratic | ~30K | ~15K | ~$0.60 |
 | `deep-research` full | ~60K | ~30K | ~$1.20 |
-| `deep-research` systematic-review | ~100K | ~50K | ~$2.00 |
+| `deep-research` lit-review | ~45K | ~20K | ~$0.90 |
 | `academic-paper` plan | ~40K | ~20K | ~$0.80 |
 | `academic-paper` full | ~80K | ~50K | ~$1.80 |
 | `academic-paper-reviewer` full | ~50K | ~30K | ~$1.10 |
@@ -332,17 +332,17 @@ You can load these skills via claude.ai's Project feature without installing Cla
 ### Quick Start
 
 ```
-# Start a full research pipeline
-You: "I want to write a research paper on AI's impact on higher education QA"
+# Physics-heavy research topic
+You: "I need literature on PDE/operator learning for fast data-efficient physics-model surrogates"
 
-# Start with Socratic guidance
-You: "Guide my research on AI in educational evaluation"
+# Method-first comparison
+You: "Compare DeepONet, FNO, and PINNs for PDE surrogate learning"
 
-# Write a paper with guided planning
-You: "Guide me through writing a paper on demographic decline"
+# Representation-sensitive topic
+You: "Help me study which representation works best for topology-changing physics surrogates"
 
-# Review an existing paper
-You: "Review this paper" (then provide the paper)
+# Socratic guidance
+You: "Guide my research on ML for structural optimization"
 
 # Check pipeline status
 You: "status"
@@ -350,15 +350,15 @@ You: "status"
 
 ### Individual Skills
 
-#### Deep Research (7 modes)
+#### Deep Research
 ```
-"Research the impact of AI on higher education"       → full mode
-"Give me a quick brief on X"                          → quick mode
-"Do a systematic review on X with PRISMA"             → systematic-review mode (new)
-"Guide my research on X"                              → socratic mode (guided)
-"Fact-check these claims"                             → fact-check mode
-"Do a literature review on X"                         → lit-review mode
-"Review this paper's research quality"                → review mode
+"Research PDE/operator learning for physics-model surrogates"   → full mode (physics/data/representation-first intake)
+"Compare FNO, DeepONet, and PINNs for PDE surrogates"           → quick or lit-review mode (direct method-family path)
+"Help me study which representation works best for X"           → full or socratic mode (representation-first intake)
+"Guide my research on X"                                        → socratic mode
+"Fact-check these claims"                                       → fact-check mode
+"Do a literature review on X"                                   → lit-review mode
+"Review this paper's research quality"                          → review mode
 ```
 
 #### Academic Paper (9 modes)
@@ -422,27 +422,35 @@ You: "status"
 
 ## Skill Details
 
-### Deep Research (v2.4)
+### Deep Research (v3.0-ml-engineering)
 
-13-agent pipeline for rigorous academic research:
+10-agent ML-for-engineering research workflow:
 
 | Agent | Role |
 |-------|------|
-| Research Question Agent | FINER-scored RQ formulation |
-| Research Architect | Methodology design |
-| Bibliography Agent | Systematic literature search |
-| Source Verification Agent | Evidence grading, predatory journal detection |
-| Synthesis Agent | Cross-source integration |
-| Report Compiler | APA 7.0 report drafting + optional Style Profile + Writing Quality Check |
-| Editor-in-Chief | Q1 journal editorial review |
-| Devil's Advocate | Assumption challenging (3 checkpoints) |
-| Ethics Review Agent | AI disclosure, attribution integrity |
-| Socratic Mentor | Guided research dialogue with convergence criteria + SCR reflection (togglable) |
-| Risk of Bias Agent | RoB 2 + ROBINS-I assessment, traffic-light output |
-| Meta-Analysis Agent | Effect sizes, heterogeneity, forest plot data, GRADE |
+| Research Question Agent | Classifies prompts as physics-heavy, representation-sensitive, method-first, or generic, then shapes the intake order |
+| Research Architect | Physics/data/fidelity/representation-first blueprint for physics-heavy topics; direct method path for method-first prompts |
+| Bibliography Agent | Retrieval ladder: arXiv/current discovery -> citation lineage -> manual library follow-up |
+| Source Verification Agent | Evidence grading with explicit distinction between current preprints and canonical peer-reviewed depth |
+| Synthesis Agent | Front-loaded physics/data/representation framing plus preserved model-family / assumption-lineage backend |
+| Report Compiler | Markdown report drafting + optional Style Profile + Writing Quality Check |
+| Devil's Advocate | Assumption challenging + routing-failure checks |
+| Socratic Mentor | Guided research dialogue for uncertain or exploratory topics |
+| ML Comparison Bias Agent | Comparative-method fairness audit for benchmark-style claims |
 | Monitoring Agent | Post-pipeline literature monitoring alerts |
 
-**Modes:** full, quick, paper-review, lit-review, fact-check, socratic, **systematic-review** (new)
+**Modes:** full, quick, review, lit-review, fact-check, socratic
+
+**Routing logic:**
+- **Physics-heavy** topics ask first about physics system, data source, fidelity ladder, representation, and validation scope
+- **Representation-sensitive** topics ask representation questions first
+- **Method-first** prompts keep an immediate model-family comparison path
+- **Generic / non-physics** prompts stay on the normal broad research flow
+
+**Retrieval ladder:**
+- **arXiv** for fast current discovery
+- **Citation graph / Semantic Scholar** for assumption lineage and influence
+- **UIUC / Northwestern manual library retrieval** for canonical peer-reviewed depth and full-text follow-up
 
 ### Academic Paper (v2.5)
 

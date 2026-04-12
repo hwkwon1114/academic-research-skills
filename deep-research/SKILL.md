@@ -1,18 +1,18 @@
 ---
 name: deep-research
-description: "Universal deep research agent team. 13-agent pipeline for rigorous academic research on any topic. 7 modes: full research, quick brief, paper review, lit-review, fact-check, Socratic guided research dialogue, and systematic review with optional meta-analysis. Covers research question formulation, Socratic mentoring, methodology design, systematic literature search, source verification, cross-source synthesis, risk of bias assessment, meta-analysis, APA 7.0 report compilation, editorial review, devil's advocate challenges, ethics review, and post-research literature monitoring. Triggers on: research, deep research, literature review, systematic review, meta-analysis, PRISMA, evidence synthesis, fact-check, guide my research, help me think through, 研究, 深度研究, 文獻回顧, 文獻探討, 系統性回顧, 後設分析, 事實查核, 引導我的研究, 幫我釐清, 幫我想想, 我不確定要研究什麼, 研究方向, 研究主題."
+description: "Research agent team for ML-in-engineering research, specialized for machine learning applied to mechanical engineering design. Uses conditional routing: physics-heavy topics start with physics system, data acquisition, fidelity, and representation; explicit method-comparison requests keep the direct method-family path. Organizes literature by model family and assumption lineage (not just themes), traces paper limitations back to root assumptions, maps the sim-to-real gap, and justifies method selection from problem characteristics. 7 modes: full research, quick brief, paper review, lit-review, fact-check, Socratic guided research dialogue, and systematic review. Covers research question formulation, methodology design for ML-for-engineering (Bayesian optimization, surrogate modeling, multi-fidelity methods, physics-informed ML, sim-to-real transfer), systematic literature search with model-family organization, assumption mapping, cross-source synthesis, representation problem analysis, evidence grading per engineering/ML norms. Triggers on: research, deep research, literature review, systematic review, surrogate model, Bayesian optimization, Gaussian process, physics-informed, sim-to-real, multi-fidelity, transfer learning, design optimization, machine learning for engineering, ML-assisted design, data-efficient design, guide my research, help me think through."
 metadata:
-  version: "2.4"
-  last_updated: "2026-03-27"
-  status: active
-  related_skills:
-    - academic-paper
-    - academic-pipeline
+ version: "3.0-ml-engineering"
+ last_updated: "2026-04-11"
+ status: active
+ related_skills:
+ - academic-paper
+ - academic-pipeline
 ---
 
 # Deep Research — Universal Academic Research Agent Team
 
-Universal deep research tool — a domain-agnostic 13-agent team for rigorous academic research on any topic.
+Deep research tool for rigorous academic research on ML-for-engineering topics.
 
 **v2.4** adds writing quality improvements to the report compiler:
 - **Style Profile consumption** (optional) — If a Style Profile is available from academic-paper intake, the report compiler applies it as a soft guide for the Executive Summary and Synthesis sections. Discipline conventions and report objectivity take priority.
@@ -20,25 +20,38 @@ Universal deep research tool — a domain-agnostic 13-agent team for rigorous ac
 
 ## Quick Start
 
-**Minimal command:**
+**Physics-heavy / acquisition-first:**
 ```
-Research the impact of AI on higher education quality assurance
+I need literature on PDE/operator learning for fast data-efficient physics-model surrogates
+```
+
+**Method-first (keeps direct comparison path):**
+```
+Compare DeepONet, FNO, and PINNs for PDE surrogate learning
+```
+
+**Representation-sensitive:**
+```
+Help me study which representation works best for topology-changing physics surrogates
 ```
 
 **Socratic mode:**
 ```
-Guide my research on the impact of declining birth rates on private universities
-引導我的研究：少子化對私立大學的影響
-幫我釐清我的研究方向，我對高教品保有興趣但還不太確定
+Guide my research: I want to use ML for structural optimization but I'm not sure
+if representation, solver cost, or model family is the real bottleneck
 ```
 
+**Routing policy:**
+- **Physics-heavy** prompts ask first about the physics system, data source/acquisition path, fidelity ladder, representation, and evaluation/sim-to-real constraints before ML method choice.
+- **Representation-sensitive** prompts ask representation questions first, even when they are not fully physics-heavy.
+- **Explicit method-comparison** prompts keep the immediate method-family comparison path unless the user asks for broader scoping.
+- **Generic / non-physics** prompts stay on the normal broad research flow.
+
 **Execution:**
-1. Scoping — Research question + methodology blueprint
-2. Investigation — Systematic literature search + source verification
-3. Analysis — Cross-source synthesis + bias check
-4. Composition — Full APA 7.0 report
-5. Review — Editorial + ethics + vulnerability scan
-6. Revision — Final polished report
+1. Scoping — Conditional intake + research question + methodology blueprint
+2. Investigation — Systematic literature search + source verification + comparison bias
+3. Analysis — Representation-aware front-end framing + model-family synthesis + DA checkpoint
+4. Compilation — Markdown report with numbered references
 
 ---
 
@@ -46,9 +59,7 @@ Guide my research on the impact of declining birth rates on private universities
 
 ### Trigger Keywords
 
-**English**: research, deep research, literature review, systematic review, meta-analysis, PRISMA, evidence synthesis, fact-check, methodology, APA report, academic analysis, policy analysis, guide my research, help me think through, monitor this topic, set up alerts
-
-**繁體中文**: 研究, 深度研究, 文獻回顧, 文獻探討, 系統性回顧, 後設分析, 證據綜整, 事實查核, 研究方法, 學術分析, 政策分析, 引導我的研究, 幫我釐清, 監測這個主題, 設定追蹤
+**English**: research, deep research, literature review, systematic review, surrogate model, Bayesian optimization, Gaussian process, physics-informed, PINN, multi-fidelity, sim-to-real, transfer learning, domain adaptation, data-efficient design, ML-assisted design, design optimization, topology optimization, generative design, representation learning, mechanical engineering ML, computational design, fact-check, guide my research, help me think through, monitor this topic
 
 ### Socratic Mode Activation
 
@@ -64,7 +75,7 @@ Activate `socratic` mode when the user's **intent** matches any of the following
 **Default rule**: When intent is ambiguous between `socratic` and `full`, **prefer `socratic`** — it is safer to guide first than to produce an unwanted report. The user can always switch to `full` later.
 
 **Example triggers** (illustrative, not exhaustive):
-"guide my research", "help me think through", 「引導我的研究」「幫我釐清」, or equivalent in any language
+"guide my research", "help me think through", or equivalent in any language
 
 ### Does NOT Trigger
 
@@ -76,38 +87,34 @@ Activate `socratic` mode when the user's **intent** matches any of the following
 
 ### Quick Mode Selection Guide
 
-| Your Situation 你的狀況 | Recommended Mode |
+| Your Situation | Recommended Mode |
 |----------------|-----------------|
-| Vague idea, need guidance / 有模糊想法，需要引導 | `socratic` |
-| Clear RQ, need comprehensive research / 有明確 RQ，需要完整研究 | `full` |
-| Need a quick brief (30 min) / 需要快速摘要 | `quick` |
-| Have a paper to evaluate before citing / 有論文需要評估 | `review` |
-| Need literature review for a topic / 需要文獻回顧 | `lit-review` |
-| Need to verify specific claims / 需要查核特定事實 | `fact-check` |
-| Need systematic review / meta-analysis / 系統性回顧或後設分析 | `systematic-review` |
+| Vague idea, need guidance | `socratic` |
+| Physics-heavy topic, need full scoping + synthesis | `full` |
+| Explicit method comparison or benchmark request | `quick` or `lit-review` |
+| Need a quick brief | `quick` |
+| Have a paper to evaluate before citing | `review` |
+| Need model-family organized literature | `lit-review` |
+| Need to verify specific claims | `fact-check` |
 
-Not sure? Start with `socratic` — it will help you figure out what you need.
-不確定？先用 `socratic` 模式——它會幫你釐清你需要什麼。
+Not sure? Start with `socratic` -- it will help you figure out what you need.
 
 ---
 
-## Agent Team (13 Agents)
+## Agent Team (10 Agents)
 
 | # | Agent | Role | Phase |
 |---|-------|------|-------|
-| 1 | `research_question_agent` | Transforms vague topics into precise, FINER-scored research questions with scope boundaries | Phase 1, Socratic Layer 1 |
-| 2 | `research_architect_agent` | Designs methodology blueprint: paradigm, method, data strategy, analytical framework, validity criteria | Phase 1 |
-| 3 | `bibliography_agent` | Systematic literature search, source screening, annotated bibliography in APA 7.0 | Phase 2 |
-| 4 | `source_verification_agent` | Fact-checking, source grading (evidence hierarchy), predatory journal detection, conflict-of-interest flagging | Phase 2 |
-| 5 | `synthesis_agent` | Cross-source integration, contradiction resolution, thematic synthesis, gap analysis | Phase 3 |
-| 6 | `report_compiler_agent` | Drafts complete APA 7.0 report (Title -> Abstract -> Intro -> Method -> Findings -> Discussion -> References) | Phase 4, 6 |
-| 7 | `editor_in_chief_agent` | Q1 journal editorial review: originality, rigor, evidence sufficiency, verdict (Accept/Revise/Reject) | Phase 5 |
-| 8 | `devils_advocate_agent` | Challenges assumptions, tests for logical fallacies, finds alternative explanations, confirmation bias checks | Phase 1, 3, 5, Socratic Layer 2, 4 |
-| 9 | `ethics_review_agent` | AI-assisted research ethics, attribution integrity, dual-use screening, fair representation | Phase 5 |
-| 10 | `socratic_mentor_agent` | Q1 journal editor persona; guides research thinking through Socratic questioning across 5 layers | Socratic Mode (Layer 1-5) |
-| 11 | `risk_of_bias_agent` | Assesses risk of bias using RoB 2 (RCTs) and ROBINS-I (non-randomized); traffic-light visualization | Systematic Review (Phase 2) |
-| 12 | `meta_analysis_agent` | Designs and executes meta-analysis or narrative synthesis; effect sizes, heterogeneity, GRADE | Systematic Review (Phase 3) |
-| 13 | `monitoring_agent` | Post-research literature monitoring: digests, retraction alerts, contradictory findings detection | Optional (post-pipeline) |
+| 1 | `research_question_agent` | Classifies prompts as physics-heavy, representation-sensitive, method-first, or generic; shapes scoped research questions using the Research Scope Protocol and the correct intake order | Phase 1, Socratic Layers 1-3 |
+| 2 | `research_architect_agent` | Designs methodology blueprint: physics/data/fidelity/representation-first for physics-heavy topics, representation-first for representation-sensitive topics, and direct Q1/Q2/Q3 method selection for method-first prompts | Phase 1 |
+| 3 | `bibliography_agent` | Systematic literature search with retrieval ladder guidance and model-family annotated bibliography; assumption annotation per paper | Phase 2 |
+| 4 | `source_verification_agent` | Evidence level grading (I-VII), venue/tier assessment, DOI/arXiv reference verification, reproducibility checklist | Phase 2 |
+| 5 | `ml_comparison_bias_agent` | Comparison bias audit for papers making comparative claims: benchmark selection, hyperparameter fairness, metric bias, data leakage, compute budget asymmetry | Phase 2 (conditional: comparative papers only) |
+| 6 | `synthesis_agent` | Preserves model-family synthesis as the backend: assumption chains, cross-family tradeoffs, sim-to-real audit, representation audit, gap analysis; receives bias trust scores from ml_comparison_bias_agent | Phase 3 |
+| 7 | `report_compiler_agent` | Drafts markdown report with numbered references [1], [2]... (no APA formatting by default) | Phase 4 |
+| 8 | `devils_advocate_agent` | DA Checkpoint 1 (after Phase 1): method-assumption fit, comparison completeness, representation coverage, evaluation scope, assumption verifiability. DA Checkpoint 2 (after Phase 3): landscape completeness, limitation root causes, validation accuracy, cross-family grounding, bottleneck attribution | Phase 1, 3, Socratic Layers 1, 2, 4 |
+| 9 | `socratic_mentor_agent` | Guides engineering research thinking through 5 Socratic layers: problem characterization, method-assumption fit, validation design, failure mode examination, scope and generalizability | Socratic Mode (Layer 1-5) |
+| 10 | `monitoring_agent` | Post-research literature monitoring: digests, retraction alerts, contradictory findings detection | Optional (post-pipeline) |
 
 ---
 
@@ -115,137 +122,130 @@ Not sure? Start with `socratic` — it will help you figure out what you need.
 
 See `references/mode_selection_guide.md` for the detailed guide.
 
+**Routing pre-check before mode selection:**
+- **Physics-heavy**: governing equations, PDE/operator learning, solver cost, multi-fidelity, simulation/experiment acquisition bottlenecks.
+- **Representation-sensitive**: fields, meshes, graphs, operators, topology changes, encoding bottlenecks.
+- **Method-first**: explicit `compare X vs Y`, benchmark, or architecture-ranking request.
+- **Generic / non-physics**: broad research questions without the triggers above.
+
+**Override rule:** explicit method-comparison requests override physics-heavy defaults unless the user asks for broader scoping.
+
 ```
 User Input
-    |
-    +-- Already have a clear research question?
-    |   +-- Yes --> Need PRISMA-compliant systematic review / meta-analysis?
-    |   |           +-- Yes --> systematic-review mode
-    |   |           +-- No --> Need a full report?
-    |   |                      +-- Yes --> full mode
-    |   |                      +-- No --> Only need literature?
-    |   |                                 +-- Yes --> lit-review mode
-    |   |                                 +-- No --> quick mode
-    |   +-- No --> Want to be guided through thinking?
-    |              +-- Yes --> socratic mode
-    |              +-- No --> full mode (Phase 1 will be interactive)
-    |
-    +-- Already have text to review? --> review mode
-    +-- Only need fact-checking? --> fact-check mode
+ |
+ +-- Already have text to review? --> review mode
+ +-- Only need fact-checking? --> fact-check mode
+ +-- Need guided thinking? --> socratic mode
+ +-- Explicit method comparison? --> quick or lit-review mode
+ +-- Physics-heavy / representation-sensitive topic? --> full mode (conditional intake in Phase 1)
+ +-- Clear RQ, need comprehensive report? --> full mode
+ +-- Need model-family organized literature? --> lit-review mode
+ +-- Otherwise --> quick mode
 ```
 
 ---
 
-## Orchestration Workflow (6 Phases)
+## Orchestration Workflow (4 Phases)
 
 ```
 User: "Research [topic]"
-     |
+ |
 === Phase 1: SCOPING (Interactive) ===
-     |
-     |-> [research_question_agent] -> RQ Brief
-     |   - FINER criteria scoring (Feasible, Interesting, Novel, Ethical, Relevant)
-     |   - Scope boundaries (in-scope / out-of-scope)
-     |   - 2-3 sub-questions
-     |
-     |-> [research_architect_agent] -> Methodology Blueprint
-     |   - Research paradigm (positivist / interpretivist / pragmatist)
-     |   - Method selection (qualitative / quantitative / mixed)
-     |   - Data strategy (primary / secondary / both)
-     |   - Analytical framework
-     |   - Validity & reliability criteria
-     |
-     +-> [devils_advocate_agent] -- CHECKPOINT 1
-         - RQ clarity and answerable?
-         - Method appropriate for question?
-         - Scope too broad or too narrow?
-         - Verdict: PASS / REVISE (with specific feedback)
-     |
-     ** User confirmation before Phase 2 **
-     |
-=== Phase 2: INVESTIGATION ===
-     |
-     |-> [bibliography_agent] -> Source Corpus + Annotated Bibliography
-     |   - Systematic search strategy (databases, keywords, Boolean)
-     |   - Inclusion/exclusion criteria
-     |   - PRISMA-style flow (if applicable)
-     |   - Annotated bibliography (APA 7.0)
-     |
-     +-> [source_verification_agent] -> Verified & Graded Sources
-         - Evidence hierarchy grading (Level I-VII)
-         - Predatory journal screening
-         - Conflict-of-interest flagging
-         - Currency assessment (publication date relevance)
-         - Source quality matrix
-     |
+ |
+ |-> [research_question_agent] -> Routed RQ Brief
+ | - Classify prompt: physics-heavy / representation-sensitive / method-first / generic
+ | - If physics-heavy: ask physics system -> data source/acquisition path -> fidelity ladder
+ |   -> representation -> evaluation/sim-to-real constraints before ML method choice
+ | - If representation-sensitive: ask representation questions first, even without full solver/fidelity intake
+ | - If method-first: provide immediate method-family framing; optional broader scoping is additive, not mandatory
+ | - Research Scope Protocol scoring (Data Regime, Method Justification,
+ |   Validation Design, Baseline Specificity, Scope Honesty)
+ | - Scope boundaries (in-scope out-of-scope)
+ | - Sim-to-real position statement
+ | - 2-3 sub-questions
+ |
+ |-> [research_architect_agent] -> Methodology Blueprint
+ | - For physics-heavy topics: cheapest usable data source, acquisition bottlenecks,
+ |   fidelity ladder, representation choice, evaluation/sim-to-real constraints, then method selection
+ | - For representation-sensitive topics: representation sufficiency + bottlenecks before method ranking
+ | - For method-first prompts: direct Q1/Q2/Q3 method comparison path with lightweight context if needed
+ | - Engineering baseline identification
+ | - Assumptions list (with verifiability assessment)
+ |
+ +-> [devils_advocate_agent] -- CHECKPOINT 1
+ | Reads references/ml_engineering_framework.md before running.
+ | 5 abstract category checks:
+ | - Method-assumption fit
+ | - Comparison completeness (engineering baseline present?)
+ | - Representation coverage
+ | - Evaluation scope honesty
+ | - Assumption verifiability
+ | Verdict: PASS / REVISE (REVISE on items 1 or 2 blocks Phase 2)
+ |
+ ** User confirmation before Phase 2 **
+ |
+=== Phase 2: INVESTIGATION (Parallel) ===
+ |
+ |-> [bibliography_agent] -> Routed Annotated Bibliography
+ | - LIVE SEARCH FIRST: use WebSearch + WebFetch (arXiv API, Semantic Scholar API)
+ |   to retrieve 2024-2026 papers before drawing on training knowledge
+ | - Retrieval ladder: fast current discovery first, then lineage, then canonical/manual full-text follow-up
+ | - Systematic search strategy (databases, keywords, Boolean)
+ | - Model-family organization remains the synthesis backend
+ | - Per-paper annotation: method, key assumption, evaluation type,
+ |   design representation, key finding, limitation root
+ |
+ |-> [source_verification_agent] -> Verified & Graded Sources
+ | - Evidence hierarchy grading (Level I-VII)
+ | - Venue/tier assessment (Tier 1-3)
+ | - DOI/arXiv reference existence verification (100% coverage)
+ | - Reproducibility checklist (code, dataset, hyperparameters, seeds, variance)
+ |
+ +-> [ml_comparison_bias_agent] -> Comparison Bias Verdicts
+   - Activates only for papers making comparative claims (method A vs B)
+   - 5 bias checks per paper: benchmark selection, hyperparameter fairness,
+     metric bias, data leakage, compute budget asymmetry
+   - Output: trust score (High / Moderate / Low / Unreliable) per paper
+ |
 === Phase 3: ANALYSIS ===
-     |
-     |-> [synthesis_agent] -> Synthesis Narrative + Gap Analysis
-     |   - Thematic synthesis across sources
-     |   - Contradiction identification & resolution
-     |   - Evidence convergence/divergence mapping
-     |   - Knowledge gap analysis
-     |   - Theoretical framework integration
-     |
-     +-> [devils_advocate_agent] -- CHECKPOINT 2
-         - Cherry-picking check
-         - Confirmation bias detection
-         - Logic chain validation
-         - Alternative explanations explored?
-         - Verdict: PASS / REVISE
-     |
-=== Phase 4: COMPOSITION ===
-     |
-     +-> [report_compiler_agent] -> Full APA 7.0 Draft
-         - Title Page
-         - Abstract (150-250 words)
-         - Introduction (context, problem, purpose, RQ)
-         - Literature Review / Theoretical Framework
-         - Methodology
-         - Findings / Results
-         - Discussion (interpretation, implications, limitations)
-         - Conclusion & Recommendations
-         - References (APA 7.0)
-         - Appendices (if applicable)
-     |
-=== Phase 5: REVIEW (Parallel) ===
-     |
-     |-> [editor_in_chief_agent] -> Editorial Verdict + Line Feedback
-     |   - Originality assessment
-     |   - Methodological rigor
-     |   - Evidence sufficiency
-     |   - Argument coherence
-     |   - Writing quality (clarity, conciseness, flow)
-     |   - Verdict: ACCEPT / MINOR REVISION / MAJOR REVISION / REJECT
-     |
-     |-> [ethics_review_agent] -> Ethics Clearance
-     |   - AI disclosure compliance
-     |   - Attribution integrity
-     |   - Dual-use screening
-     |   - Fair representation check
-     |   - Verdict: CLEARED / CONDITIONAL / BLOCKED
-     |
-     +-> [devils_advocate_agent] -- CHECKPOINT 3
-         - Final vulnerability scan
-         - Strongest counter-argument test
-         - "So what?" significance check
-         - Verdict: PASS / REVISE
-     |
-=== Phase 6: REVISION ===
-     |
-     +-> [report_compiler_agent] -> Final Report
-         - Address editorial feedback
-         - Resolve ethics conditions
-         - Incorporate devil's advocate insights
-         - Max 2 revision loops
-         - Remaining issues -> "Acknowledged Limitations" section
+ |
+ |-> [synthesis_agent] -> Representation-Aware Framing + Model-Family Synthesis
+ | - Reads ml_comparison_bias_agent trust scores; flags Low/Unreliable papers
+ | - Preserves model-family clustering as the stable backend
+ | - For physics-heavy domains, front-load physics regime, acquisition path, fidelity,
+ |   and representation bottlenecks before cross-family comparison
+ | - Assumption inheritance chains (foundational -> generalized)
+ | - Cross-family tradeoffs (where families are composable vs. incompatible)
+ | - Sim-to-real audit (simulation-only vs. hardware-validated)
+ | - Representation audit (what design encodings are used; topology limits)
+ | - Gap analysis (what problem areas have no ML literature)
+ |
+ +-> [devils_advocate_agent] -- CHECKPOINT 2
+   Reads references/ml_engineering_framework.md before running.
+   5 abstract category checks:
+   - Landscape completeness (families missing? papers misclassified?)
+   - Limitation root cause depth (surface description vs. actual assumption violation?)
+   - Validation claim accuracy (evidence type matches what was demonstrated?)
+   - Cross-family synthesis grounding (relationships backed by paper evidence?)
+   - Performance bottleneck attribution (ML method vs. representation encoding?)
+   Verdict: PASS / REVISE (REVISE on items 1-3 requires synthesis re-run before Phase 4)
+ |
+=== Phase 4: COMPILATION ===
+ |
+ +-> [report_compiler_agent] -> Markdown Report + Numbered References
+   - Default output: plain markdown, references as [1], [2] inline and at end
+   - No title page, no APA formatting (user may request IEEE/ASME at intake)
+   - Sections: Introduction, Method-Family Literature, Assumption Map,
+     Sim-to-Real Summary, Representation Audit, Gap Analysis, References
+   - Self-review before finalizing: all families present? gap analysis
+     connected to family limitations? references consistent with inline citations?
 ```
 
 ### Checkpoint Rules
 
-1. **Devil's Advocate** has 3 mandatory checkpoints; **Critical-severity** issues block progression
-2. Revision loops capped at **2 iterations**; remaining issues become "acknowledged limitations"
-3. **Ethics Review** can halt delivery for Critical ethics concerns
+1. **Devil's Advocate** has 2 mandatory checkpoints (Phases 1 and 3); **Critical-severity** issues block progression
+2. A REVISE verdict on DA Checkpoint 1 items 1 or 2 (method-assumption fit, comparison completeness) blocks Phase 2
+3. A REVISE verdict on DA Checkpoint 2 items 1-3 requires synthesis_agent to re-run affected sections before Phase 4
 4. User confirmation required after Phase 1 before proceeding
 
 ---
@@ -259,52 +259,51 @@ See `references/socratic_questioning_framework.md` for the questioning framework
 
 ```
 User: "Guide my research on [topic]"
-     |
-=== Layer 1: PROBLEM FRAMING (corresponds to first half of Phase 1) ===
-     |
-     +-> [socratic_mentor_agent] -> Follow-up on research motivation and problem definition
-         [research_question_agent] -> Provide FINER guidance framework
-         - "What is the question you truly want to answer?"
-         - "Why does this question matter? To whom?"
-         - "If your research succeeds, how would the world be different?"
-         Extract [INSIGHT: ...] each round
-         At least 2 rounds of dialogue before entering Layer 2
-     |
-=== Layer 2: METHODOLOGY REFLECTION (corresponds to second half of Phase 1) ===
-     |
-     +-> [socratic_mentor_agent] -> Follow-up on rationale for methodology choices
-         [devils_advocate_agent] -> Challenge methodology assumptions at end of Layer 2
-         - "How do you plan to answer this question? Why this approach?"
-         - "Is there a completely different method that could also answer your question?"
-         - "What is the biggest weakness of your method?"
-         At least 2 rounds of dialogue before entering Layer 3
-     |
-=== Layer 3: EVIDENCE DESIGN (corresponds to Phase 2-3) ===
-     |
-     +-> [socratic_mentor_agent] -> Follow-up on evidence strategy
-         - "What kind of evidence would convince you of your conclusion?"
-         - "What evidence would make you change your conclusion?"
-         - "What are you most worried about not finding?"
-         At least 2 rounds of dialogue before entering Layer 4
-     |
-=== Layer 4: CRITICAL SELF-EXAMINATION (corresponds to Phase 5) ===
-     |
-     +-> [socratic_mentor_agent] -> Follow-up on limitations and risks
-         [devils_advocate_agent] -> Challenge conclusion assumptions
-         - "What does your research assume? What if those assumptions don't hold?"
-         - "How would someone with the opposite view refute you?"
-         - "What negative impact could your research have?"
-         At least 2 rounds of dialogue before entering Layer 5
-     |
-=== Layer 5: SIGNIFICANCE & CONTRIBUTION (conclusion) ===
-     |
-     +-> [socratic_mentor_agent] -> Follow-up on "so what?"
-         - "Why should readers care about your findings?"
-         - "What aspects of our understanding of this issue does your research change?"
-         At least 1 round of dialogue
-     |
-     +-> Compile all [INSIGHT]s into Research Plan Summary
-         Can directly hand off to academic-paper (plan mode)
+ |
+=== Layer 1: PROBLEM CHARACTERIZATION ===
+ |
+ +-> [socratic_mentor_agent] -> Establish the engineering design context
+ [research_question_agent] -> Research Scope Protocol guidance (data regime)
+ [devils_advocate_agent] -> Challenge whether problem framing implies clear data regime
+ - "What is the design task? What makes each evaluation expensive?"
+ - "What does success look like in engineering terms -- not model accuracy?"
+ Extract [INSIGHT: ...] each round
+ At least 2 rounds of dialogue before entering Layer 2
+ |
+=== Layer 2: METHOD-ASSUMPTION FIT ===
+ |
+ +-> [socratic_mentor_agent] -> Connect ML method to problem characteristics
+ [research_question_agent] -> Research Scope Protocol guidance (method justification)
+ [devils_advocate_agent] -> Challenge method-assumption fit at end of Layer 2
+ - "What assumption does your chosen method make about the response landscape?"
+ - "What would a practicing engineer use without ML? That's your baseline."
+ At least 2 rounds of dialogue before entering Layer 3
+ |
+=== Layer 3: VALIDATION DESIGN ===
+ |
+ +-> [socratic_mentor_agent] -> Establish validation scope and sim-to-real position
+ [research_question_agent] -> Research Scope Protocol guidance (validation design)
+ - "Simulation-only or hardware-validated? What justifies that scope?"
+ - "Is your metric the same as the engineering objective, or a proxy?"
+ At least 2 rounds of dialogue before entering Layer 4
+ |
+=== Layer 4: FAILURE MODE EXAMINATION ===
+ |
+ +-> [socratic_mentor_agent] -> Force concrete thinking about when the approach breaks
+ [devils_advocate_agent] -> Challenge failure mode assessment
+ - "Under what conditions does your method's key assumption get violated?"
+ - "What physical phenomena does your simulation omit that could matter on hardware?"
+ At least 2 rounds of dialogue before entering Layer 5
+ |
+=== Layer 5: SCOPE AND GENERALIZABILITY ===
+ |
+ +-> [socratic_mentor_agent] -> Bound what the study can claim
+ - "What specific design families and conditions does your study cover?"
+ - "Is there a generalization claim the evaluation cannot actually support?"
+ At least 1 round of dialogue
+ |
+ +-> Compile all [INSIGHT]s into Research Plan Summary
+ Can directly hand off to academic-paper (plan mode)
 ```
 
 ### Socratic Mode Dialogue Management Rules
@@ -318,113 +317,16 @@ User: "Guide my research on [topic]"
 
 ---
 
-## Systematic Review Mode
-
-Full PRISMA-compliant systematic literature review with optional meta-analysis. This mode extends the standard 6-phase pipeline with specialized agents for risk of bias assessment (RoB 2, ROBINS-I) and quantitative synthesis.
-
-See `agents/risk_of_bias_agent.md` and `agents/meta_analysis_agent.md` for detailed agent definitions.
-See `references/systematic_review_toolkit.md` for the Cochrane/PRISMA/GRADE reference guide.
-
-```
-User: "Systematic review of [topic]" / "Meta-analysis of [topic]"
-     |
-=== Phase 1: SCOPING (Generates Protocol, not just RQ) ===
-     |
-     |-> [research_question_agent] -> PICOS-formatted RQ
-     |   - Population, Intervention, Comparator, Outcome, Study design
-     |   - Explicit eligibility criteria (inclusion/exclusion)
-     |
-     |-> [research_architect_agent] -> Systematic Review Protocol
-     |   - Protocol follows PRISMA-P 2015 (templates/prisma_protocol_template.md)
-     |   - Pre-specified subgroup analyses and sensitivity analyses
-     |   - Risk of bias tool selection (RoB 2 / ROBINS-I)
-     |   - Meta-analysis feasibility pre-assessment
-     |
-     +-> [devils_advocate_agent] -- CHECKPOINT 1
-         - PICOS specificity check
-         - Search strategy comprehensiveness
-         - Protocol completeness
-         - Verdict: PASS / REVISE
-     |
-     ** User confirmation of protocol before Phase 2 **
-     |
-=== Phase 2: INVESTIGATION (PRISMA-Compliant Search + RoB) ===
-     |
-     |-> [bibliography_agent] -> PRISMA Flow Diagram + Source Corpus
-     |   - Search ≥ 2 databases with documented strategy
-     |   - Dual-pass screening (title/abstract → full text)
-     |   - PRISMA 2020 flow diagram with counts at each stage
-     |   - Excluded studies with reasons documented
-     |
-     |-> [source_verification_agent] -> Verified Sources
-     |   - Standard verification + predatory journal screening
-     |
-     +-> [risk_of_bias_agent] -> RoB Assessment
-         - Per-study domain assessment with signaling questions
-         - Traffic-light summary table across all studies
-         - Distribution summary (% Low / Some Concerns / High)
-     |
-=== Phase 3: ANALYSIS (Meta-Analysis or Narrative Synthesis) ===
-     |
-     |-> [meta_analysis_agent] -> Quantitative or Narrative Synthesis
-     |   - Feasibility assessment (pool or not?)
-     |   - If feasible: effect size calculation, forest plot data,
-     |     heterogeneity (I², Q, tau²), subgroup/sensitivity analyses
-     |   - If not feasible: structured narrative synthesis (SWiM)
-     |   - GRADE certainty of evidence for each outcome
-     |
-     |-> [synthesis_agent] -> Qualitative Themes + Gap Analysis
-     |   - Thematic synthesis across studies
-     |   - Integration with quantitative findings
-     |
-     +-> [devils_advocate_agent] -- CHECKPOINT 2
-         - Cherry-picking check
-         - Heterogeneity explanation adequacy
-         - GRADE assessment validity
-         - Verdict: PASS / REVISE
-     |
-=== Phase 4: COMPOSITION ===
-     |
-     +-> [report_compiler_agent] -> PRISMA 2020 Report
-         - Uses templates/prisma_report_template.md
-         - All 27 PRISMA items mapped to sections
-         - Study characteristics table
-         - Risk of bias summary table
-         - Forest plot data (if meta-analysis)
-         - GRADE Summary of Findings table
-     |
-=== Phase 5: REVIEW (Parallel) ===
-     |
-     |-> [editor_in_chief_agent] -> Editorial Verdict
-     |-> [ethics_review_agent] -> Ethics Clearance
-     +-> [devils_advocate_agent] -- CHECKPOINT 3
-     |
-=== Phase 6: REVISION ===
-     |
-     +-> [report_compiler_agent] -> Final PRISMA Report
-```
-
-### Systematic Review Checkpoint Rules
-
-1. All standard checkpoint rules apply (see Checkpoint Rules below)
-2. **Protocol must be registered** (or registration recommended) before Phase 2
-3. **Risk of bias must be completed for all studies** before Phase 3
-4. **GRADE assessment required** for every pooled outcome
-5. **PRISMA checklist compliance** verified in Phase 5
-
----
-
 ## Operational Modes
 
-| Mode | Agents Active | Output | Word Count |
-|------|---------------|--------|------------|
-| `full` (default) | All 9 core (excluding socratic_mentor, RoB, meta-analysis) | Full APA 7.0 report | 3,000-8,000 |
-| `quick` | RQ + Biblio + Verification + Report | Research brief | 500-1,500 |
-| `review` | Editor + Devil's Advocate + Ethics | Reviewer report on provided text | N/A |
-| `lit-review` | Biblio + Verification + Synthesis | Annotated bibliography + synthesis | 1,500-4,000 |
-| `fact-check` | Source Verification only | Verification report | 300-800 |
+| Mode | Agents Active | Output | Length |
+|------|---------------|--------|--------|
+| `full` (default) | RQ + Architect + DA(x2) + Biblio + Verification + Bias + Synthesis + Report | Markdown report, numbered references | 3,000-8,000 words |
+| `quick` | RQ + Biblio + Verification + Report | Research brief (markdown) | 500-1,500 words |
+| `review` | Devil's Advocate + Source Verification | Reviewer report on provided text | N/A |
+| `lit-review` | Biblio + Verification + Bias + Synthesis | Annotated bibliography + model-family synthesis | 1,500-4,000 words |
+| `fact-check` | Source Verification only | Verification report per claim | 300-800 words |
 | `socratic` | Socratic Mentor + RQ + Devil's Advocate | Research Plan Summary (INSIGHT collection) | N/A (iterative) |
-| `systematic-review` | RQ + Architect + Biblio + Verification + RoB + Meta-Analysis + Synthesis + Report + Editor + Ethics + DA | Full PRISMA 2020 report + forest plot data + GRADE table | 5,000-15,000 |
 
 ---
 
@@ -436,14 +338,14 @@ Key failure path summary:
 
 | Failure Scenario | Trigger Condition | Recovery Strategy |
 |---------|---------|---------|
-| RQ cannot converge | Phase 1 / Layer 1 exceeds multiple rounds while still vague | Provide 3 candidate RQs or suggest lit-review |
-| Insufficient literature | bibliography_agent finds < 5 sources | Expand search strategy, alternative keywords |
-| Methodology mismatch | RQ type misaligned with method capability | Return to Phase 1, suggest 3 alternative methods |
-| Devil's Advocate CRITICAL | Fatal logical flaw discovered | STOP, explain the issue, require correction |
-| Ethics BLOCKED | Serious ethical issue | STOP, list issues and remediation path |
-| Socratic non-convergence | > 10 rounds without convergence | Suggest switching to full mode |
+| RQ scope too broad | Research Scope Protocol average < 2.5 | Return to Phase 1, narrow to specific design domain + data regime |
+| Method-assumption mismatch | DA Checkpoint 1 REVISE on item 1 | Return to Phase 1; justify method from Q1/Q2/Q3 framework |
+| No engineering baseline | DA Checkpoint 1 REVISE on item 2 | Return to Phase 1; identify what a practicing engineer would use |
+| Insufficient literature | bibliography_agent finds < 5 sources | Expand search strategy, adjacent keywords, broader design family |
+| DA Checkpoint CRITICAL | Fatal assumption violation or missing baseline | STOP, explain issue, require correction before Phase 2 |
+| Socratic non-convergence | > 10 rounds in a layer without convergence | Suggest switching to `full` mode |
 | User abandons mid-process | Explicitly states they don't want to continue | Save progress, provide re-entry path |
-| Only Chinese-language literature | English search returns empty | Switch to Chinese academic databases |
+| All papers simulation-only | No hardware-validated papers in corpus | Note in synthesis; flag as gap; do not allow hardware claims |
 
 ---
 
@@ -485,7 +387,7 @@ After research is complete, the following materials can be handed off to `academ
 `academic-paper`'s `intake_agent` will automatically detect available materials and skip redundant steps:
 - Has RQ Brief -> skip topic scoping
 - Has Bibliography -> skip literature search
-- Has Synthesis -> accelerate findings / discussion writing
+- Has Synthesis -> accelerate findings discussion writing
 
 See `examples/handoff_to_paper.md` for a detailed handoff example.
 
@@ -505,14 +407,11 @@ See `academic-pipeline/SKILL.md` for the complete workflow.
 | research_architect_agent | `agents/research_architect_agent.md` |
 | bibliography_agent | `agents/bibliography_agent.md` |
 | source_verification_agent | `agents/source_verification_agent.md` |
+| ml_comparison_bias_agent | `agents/ml_comparison_bias_agent.md` |
 | synthesis_agent | `agents/synthesis_agent.md` |
 | report_compiler_agent | `agents/report_compiler_agent.md` |
-| editor_in_chief_agent | `agents/editor_in_chief_agent.md` |
 | devils_advocate_agent | `agents/devils_advocate_agent.md` |
-| ethics_review_agent | `agents/ethics_review_agent.md` |
 | socratic_mentor_agent | `agents/socratic_mentor_agent.md` |
-| risk_of_bias_agent | `agents/risk_of_bias_agent.md` |
-| meta_analysis_agent | `agents/meta_analysis_agent.md` |
 | monitoring_agent | `agents/monitoring_agent.md` |
 
 ---
@@ -521,20 +420,12 @@ See `academic-pipeline/SKILL.md` for the complete workflow.
 
 | Reference | Purpose | Used By |
 |-----------|---------|---------|
-| `references/apa7_style_guide.md` | APA 7th edition quick reference | report_compiler, editor_in_chief |
-| `references/source_quality_hierarchy.md` | Evidence pyramid + grading rubric | source_verification, bibliography |
-| `references/methodology_patterns.md` | Research design templates | research_architect |
+| `references/ml_engineering_framework.md` | ML method selection guide (data regime -> method family), assumption catalog (GP, NN, PINN, multi-fidelity, BO, domain adaptation), sim-to-real gap taxonomy, representation taxonomy, 5 common research patterns with key papers | research_architect, synthesis, devils_advocate (Checkpoints 1+2), bibliography |
 | `references/logical_fallacies.md` | 30+ fallacies catalog | devils_advocate |
-| `references/ethics_checklist.md` | AI disclosure, attribution, dual-use | ethics_review |
-| `references/interdisciplinary_bridges.md` | Cross-discipline connection patterns | synthesis, research_architect |
-| `references/socratic_questioning_framework.md` | 6 types of Socratic questions + 30+ prompt patterns | socratic_mentor |
-| `references/failure_paths.md` | 12 failure scenarios with triggers and recovery paths | all agents |
+| `references/socratic_questioning_framework.md` | 6 types of Socratic questions + prompt patterns | socratic_mentor |
+| `references/failure_paths.md` | Failure scenarios with triggers and recovery paths | all agents |
 | `references/mode_selection_guide.md` | Mode selection flowchart and comparison table | orchestrator |
-| `references/irb_decision_tree.md` | IRB decision tree + Taiwan process + HE quick reference | ethics_review, research_architect |
-| `references/equator_reporting_guidelines.md` | EQUATOR reporting guideline mapping | research_architect, report_compiler |
-| `references/preregistration_guide.md` | Preregistration decision tree + platforms + checklist | research_architect |
-| `references/systematic_review_toolkit.md` | Cochrane v6.4, PRISMA 2020, RoB 2, ROBINS-I, I² guide, GRADE, protocol registration | risk_of_bias, meta_analysis, bibliography, report_compiler |
-| `references/literature_monitoring_strategies.md` | Google Scholar alerts, PubMed alerts, RSS feeds, Retraction Watch, citation tracking, monitoring cadence | monitoring_agent |
+| `references/literature_monitoring_strategies.md` | Google Scholar alerts, RSS feeds, citation tracking, monitoring cadence | monitoring_agent |
 
 ---
 
@@ -543,11 +434,8 @@ See `academic-pipeline/SKILL.md` for the complete workflow.
 | Template | Purpose |
 |----------|---------|
 | `templates/research_brief_template.md` | Quick mode output format |
-| `templates/literature_matrix_template.md` | Source x Theme analysis matrix |
+| `templates/literature_matrix_template.md` | Model-family x Assumption analysis matrix |
 | `templates/evidence_assessment_template.md` | Per-source quality assessment card |
-| `templates/preregistration_template.md` | OSF standard 21-item preregistration template |
-| `templates/prisma_protocol_template.md` | PRISMA-P 2015 systematic review protocol template |
-| `templates/prisma_report_template.md` | PRISMA 2020 systematic review report template (27 items) |
 
 ---
 
@@ -555,31 +443,28 @@ See `academic-pipeline/SKILL.md` for the complete workflow.
 
 | Example | Demonstrates |
 |---------|-------------|
-| `examples/exploratory_research.md` | Full 6-phase pipeline walkthrough |
-| `examples/systematic_review.md` | PRISMA-style literature review |
-| `examples/policy_analysis.md` | Applied comparative policy research |
-| `examples/socratic_guided_research.md` | Complete Socratic mode multi-turn dialogue (12 rounds) |
+| `examples/socratic_guided_research.md` | Complete Socratic mode multi-turn dialogue with engineering layers |
 | `examples/handoff_to_paper.md` | deep-research full mode handoff to academic-paper |
-| `examples/review_mode.md` | Review mode: 3-agent review pipeline for policy recommendation text |
-| `examples/fact_check_mode.md` | Fact-check mode: source verification of HEI claims with per-claim verdicts |
+| `examples/fact_check_mode.md` | Fact-check mode: source verification with per-claim verdicts |
 
 ---
 
 ## Output Language
 
-Follows the user's language. Academic terminology kept in English. Socratic mode uses natural conversational style.
+English. Academic terminology in English. Socratic mode uses natural conversational style.
 
 ---
 
 ## Quality Standards
 
-1. **Every claim must have a citation** — no unsupported assertions
-2. **Evidence hierarchy** — meta-analyses > RCTs > cohort studies > case reports > expert opinion
-3. **Contradiction disclosure** — if sources disagree, report both sides with evidence quality comparison
-4. **Limitation transparency** — every report must have an explicit limitations section
-5. **AI disclosure** — all reports include a statement that AI-assisted research tools were used
-6. **Reproducibility** — search strategies, inclusion criteria, and analytical methods must be documented for replication
-7. **Socratic integrity** — in socratic mode, never give direct answers; always guide through questions
+1. **Every claim must have a citation** -- no unsupported assertions
+2. **Evidence hierarchy (ML/Engineering)** -- formal proofs + empirical validation > comprehensive ablations > multi-method benchmarks > single-benchmark studies > simulation-only demonstrations > expert opinion. See `agents/source_verification_agent.md` for full levels.
+3. **Method selection must be justified** -- every ML method choice must cite specific problem characteristics (data regime, evaluation cost, uncertainty requirements). See `references/ml_engineering_framework.md`.
+4. **Assumptions must be traced to limitations** -- limitations in a paper are almost always traceable to a specific model assumption. Surface these explicitly.
+5. **Sim-to-real status must be documented** -- for every paper: simulation only, hardware validated, or both.
+6. **Literature organized by model family** -- papers sharing a mathematical lineage go together in synthesis and bibliography outputs.
+7. **Reproducibility** -- search strategies, inclusion criteria, and analytical methods must be documented for replication.
+8. **Socratic integrity** -- in socratic mode, never give direct answers; always guide through questions.
 
 ## Cross-Agent Quality Alignment
 
@@ -587,12 +472,13 @@ Unified definitions to prevent inconsistency across agents:
 
 | Concept | Definition | Applies To |
 |---------|-----------|------------|
-| **Peer-reviewed** | Published in a journal with formal peer review process (editorial review alone does not qualify). Conference proceedings count only if explicitly peer-reviewed | bibliography_agent, source_verification_agent |
-| **Currency Rule** | Default: published within 5 years. Override by domain: CS/AI = 3 years, History/Philosophy = 20 years, Law = depends on jurisdiction changes. Seminal works exempt regardless of age | bibliography_agent, ethics_review_agent |
-| **CRITICAL severity** | Issue that, if unresolved, would invalidate a core conclusion or constitute academic misconduct. Requires immediate resolution before pipeline can proceed | All agents |
-| **Source Tier** | tier_1 = top-quartile peer-reviewed journal; tier_2 = other peer-reviewed; tier_3 = academic but not peer-reviewed; tier_4 = grey literature | bibliography_agent, source_verification_agent |
-| **Minimum Source Count** | full = 15+, quick = 5-8, lit-review = 25+, systematic-review = all eligible (no limit), fact-check = 3+ per claim | bibliography_agent |
-| **Verification Threshold** | 100% DOI check + 50% WebSearch spot-check | source_verification_agent, ethics_review_agent |
+| **Peer-reviewed** | Published in a journal with formal peer review. Conference proceedings count if explicitly peer-reviewed (NeurIPS/ICML/ICRA = yes; workshops = varies). arXiv = treat as unreviewed Tier 2. | bibliography_agent, source_verification_agent |
+| **Currency Rule** | By domain: ML/deep learning = 3 years, Bayesian optimization/GP = 5 years, FEM/CFD/structural engineering = 10 years. Seminal works exempt regardless of age. | bibliography_agent |
+| **CRITICAL severity** | Issue that, if unresolved, would invalidate a core conclusion. Requires immediate resolution before pipeline proceeds. | All agents |
+| **Source Tier** | Tier 1 = NeurIPS/ICML/ICRA/ASME/AIAA top journals; Tier 2 = other peer-reviewed engineering/ML venues; Tier 3 = arXiv preprints from established groups | bibliography_agent, source_verification_agent |
+| **Minimum Source Count** | full = 15+, quick = 5-8, lit-review = 20+ | bibliography_agent |
+| **Verification Threshold** | 100% DOI/arXiv check + 50% WebSearch spot-check | source_verification_agent |
+| **Comparative claim** | Any paper that benchmarks 2+ methods against each other -- triggers ml_comparison_bias_agent | ml_comparison_bias_agent |
 
 > **Cross-Skill Reference**: See `shared/handoff_schemas.md` for inter-stage data exchange formats.
 
@@ -600,15 +486,10 @@ Unified definitions to prevent inconsistency across agents:
 
 ## Integration with Other Skills
 
-This skill is domain-agnostic but can be combined with domain-specific skills:
-
 ```
-deep-research + tw-hei-intelligence     -> Evidence-based HEI policy research
-deep-research + report-to-website       -> Interactive research report
-deep-research + podcast-script-generator -> Research podcast
-deep-research + academic-paper          -> Full research-to-publication pipeline
+deep-research + academic-paper -> Full research-to-publication pipeline (ML/engineering focus)
 deep-research (socratic) + academic-paper (plan) -> Guided research + paper planning
-deep-research (systematic-review) + academic-paper -> PRISMA systematic review paper
+deep-research (lit-review) -> Model-family organized bibliography for standalone use
 ```
 
 ---
@@ -617,6 +498,7 @@ deep-research (systematic-review) + academic-paper -> PRISMA systematic review p
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 3.1 | 2026-04-05 | 6-phase pipeline collapsed to 4 phases (removed editor_in_chief, ethics_review, DA Checkpoint 3, Phase 6 revision loop -- all redundant with upstream validation). Added ml_comparison_bias_agent (Phase 2, parallel, conditional on comparative claims). Trimmed source_verification_agent to venue/tier + reference existence + reproducibility only (bias assessment moved to new agent). Rewrote all 5 Socratic layers for ML/engineering context (problem characterization, method-assumption fit, validation design, failure mode examination, scope and generalizability). Replaced FINER/PICOS in research_question_agent with Research Scope Protocol (data regime, method justification, validation design, baseline specificity, scope honesty). Default output changed to plain markdown with numbered references (not APA 7.0). Removed systematic-review mode (PRISMA/RoB/GRADE not applicable to ML/engineering). |
 | 2.4 | 2026-03-27 | Report compiler now consumes optional Style Profile (from academic-paper intake) and runs Writing Quality Check checklist before finalizing reports. Style Profile applied as soft guide for Executive Summary and Synthesis sections; discipline conventions take priority. Writing Quality Check catches overused AI-typical terms, em dash overuse, throat-clearing openers, and monotonous sentence rhythm. See `academic-paper/references/writing_quality_check.md` and `shared/style_calibration_protocol.md` |
 | 2.3 | 2026-03-08 | Added systematic-review mode (7th mode): PRISMA 2020 compliant pipeline with risk_of_bias_agent (RoB 2 + ROBINS-I), meta_analysis_agent (effect sizes, heterogeneity, GRADE, narrative synthesis), 2 new templates (PRISMA protocol + report), systematic_review_toolkit reference. Added monitoring_agent (post-pipeline literature monitoring with digests, retraction alerts, author tracking) + literature_monitoring_strategies reference. Enhanced socratic_mentor_agent with 4 convergence signals, 4-type question taxonomy, and auto-end triggers. Added Quick Mode Selection Guide to SKILL.md |
 | 2.2 | 2025-03-05 | Added synthesis anti-patterns, Socratic quantified thresholds & auto-end conditions, reference existence verification (DOI + WebSearch), enhanced ethics reference integrity check (50% + Retraction Watch), mode transition matrix, cross-agent quality alignment definitions |
