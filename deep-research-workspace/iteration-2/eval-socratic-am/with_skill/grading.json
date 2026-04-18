@@ -1,0 +1,41 @@
+{
+  "eval_id": 2,
+  "eval_name": "socratic-am",
+  "configuration": "with_skill",
+  "pass_rate": 0.833,
+  "passed": 5,
+  "failed": 1,
+  "total": 6,
+  "expectations": [
+    {
+      "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance",
+      "passed": false,
+      "evidence": "First question asks 'what specifically goes wrong? / are you targeting keyhole porosity, lack-of-fusion, or both?' (problem characterization / defect type). Data regime question (print budget, labeled example count) arrives at Turn 2. No humanities framing, but also not strictly data-regime-first."
+    },
+    {
+      "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)",
+      "passed": true,
+      "evidence": "Layer 2 explicitly: 'Standard GP with a stationary kernel assumes the function is equally smooth everywhere in parameter space' stated as the key assumption; GP/BO connected to the ~15-20 print budget from Layer 1; justification: 'In the small-data regime (15-20 points), GP is the best-calibrated option because it provides uncertainty estimates needed for BO acquisition function'"
+    },
+    {
+      "text": "The dialogue includes at least one question about simulation vs. hardware validation scope",
+      "passed": true,
+      "evidence": "Layer 3 (Validation Design): 'Both are hardware-validated, which is the right scope for this study'; Research Plan Summary explicitly states 'Sim-to-real position: Not applicable — the study is hardware-only. No simulation component is introduced.' The mentor frames this explicitly in Layer 3."
+    },
+    {
+      "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)",
+      "passed": true,
+      "evidence": "Layer 2, Turn 4: 'What would a practicing engineer — one with no ML tools at all — do to solve this problem? Specifically, how do engineers currently find good process parameters for a new material on a new LPBF system?' — elicits factorial/Latin hypercube DoE as baseline"
+    },
+    {
+      "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'",
+      "passed": true,
+      "evidence": "All questions are engineering-focused throughout 5 layers and 22 turns: data regime, method-assumption fit, validation scope, failure modes, generalizability. No societal impact or humanities framing appears."
+    },
+    {
+      "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope",
+      "passed": true,
+      "evidence": "Research Plan Summary covers: 'Problem Characterization' (design task, data regime), 'Method Selection and Justification' (GP with stationarity assumption + justification), 'Validation Scope' (hardware-only, metrics, sim-to-real position), 'Known Failure Modes', 'Scope and Claims'"
+    }
+  ]
+}

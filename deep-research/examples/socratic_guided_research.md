@@ -282,9 +282,9 @@ Dialogue concluded. Below is the Research Plan Summary extracted from 12 rounds 
 - **Number of cases**: 4-6 private technology universities
 - **Case selection**: Two-stage — first screen with objective indicators (enrollment rate changes, financial status), then pair (geographic location x school size)
 - **Data collection**: Triangulation
-  - In-depth administrator interviews
-  - MOE public statistical data
-  - School self-assessment report document analysis
+ - In-depth administrator interviews
+ - MOE public statistical data
+ - School self-assessment report document analysis
 
 ### Evidence Strategy
 

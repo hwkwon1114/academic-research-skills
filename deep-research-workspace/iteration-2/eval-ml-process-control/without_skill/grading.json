@@ -1,0 +1,41 @@
+{
+  "eval_id": 1,
+  "eval_name": "ml-process-control",
+  "configuration": "without_skill",
+  "pass_rate": 0.667,
+  "passed": 4,
+  "failed": 2,
+  "total": 6,
+  "expectations": [
+    {
+      "text": "Output explicitly characterizes the data regime for AM (continuous temporal stream from in-situ sensors, limited labeled examples, expensive evaluations per print)",
+      "passed": true,
+      "evidence": "Section 2.3 'Data Characteristics' explicitly lists: 'Sequential/temporal structure: Quality at layer N depends on cumulative thermal history through layers 1 to N' and 'Sparse labels: ground-truth quality labels (from CT scanning, tensile testing) are expensive to acquire'"
+    },
+    {
+      "text": "Output flags that the sequential/temporal nature of thermal history data violates the i.i.d. assumption of standard feedforward models, and names which method families handle this",
+      "passed": true,
+      "evidence": "Section 3.1: 'Limitations of frame-wise CNNs: They discard temporal context'; Section 3.2 names LSTM and GRU as the solution explicitly addressing sequential dependence"
+    },
+    {
+      "text": "Sim-to-real gap is named with at least one specific physics the simulation omits (e.g., melt pool dynamics, microstructure evolution, residual stress)",
+      "passed": true,
+      "evidence": "Abstract mentions 'sensor noise, latency constraints, distribution shift, and calibration challenges'; body section names Marangoni convection, spattering, and process-geometry coupling as specific omitted physics"
+    },
+    {
+      "text": "An engineering baseline is identified — what a process engineer would use without ML (e.g., PID control, design of experiments, empirical process maps)",
+      "passed": true,
+      "evidence": "Section 4.1 and later sections describe PID melt-pool area control as the deployed baseline: 'PID controllers that maintain constant melt-pool area by modulating laser power in real time'; identified as what 'ML contributes to the sensing rather than the controller logic'"
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end",
+      "passed": false,
+      "evidence": "Inline citations use APA author-year format throughout (Kats et al. (2022), Mozaffar et al. (2019), Shevchik et al. (2018)); reference list at end is APA alphabetical format"
+    },
+    {
+      "text": "Method selection for at least one family is explicitly justified from problem characteristics (data regime, uncertainty need, or physics structure) — not just described",
+      "passed": true,
+      "evidence": "'Long Short-Term Memory (LSTM) networks and Gated Recurrent Units (GRUs) are the most widely adopted architectures for thermal history modeling because they explicitly handle variable-length sequential inputs and can learn long-range temporal dependencies' — justified from data structure (sequential nature)"
+    }
+  ]
+}

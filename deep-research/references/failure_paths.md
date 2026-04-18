@@ -10,7 +10,7 @@ This document lists all failure scenarios that may be encountered across all mod
 
 | # | Failure Scenario | Affected Modes | Severity | Handling Strategy |
 |---|---------|---------|---------|---------|
-| F1 | RQ cannot converge | full, socratic | Medium | Narrow scope / provide candidate RQs |
+| F1 | RQ cannot converge | full, socratic | Medium | Narrow scope provide candidate RQs |
 | F2 | Insufficient literature | full, quick, lit-review | High | Expand search strategy |
 | F3 | Methodology mismatch | full | High | Return to Phase 1 |
 | F4 | Devil's Advocate CRITICAL | full | Critical | STOP + correct |
@@ -48,7 +48,7 @@ This document lists all failure scenarios that may be encountered across all mod
 **Recovery Paths**:
 - Select a candidate RQ → continue the original workflow
 - Do lit-review → restart RQ clarification after the literature review is complete
-- User redescribes on their own → restart Phase 1 / Layer 1
+- User redescribes on their own → restart Phase 1 Layer 1
 
 ---
 
@@ -176,7 +176,7 @@ This document lists all failure scenarios that may be encountered across all mod
 **Handling Steps**:
 1. Compile currently extracted INSIGHTs
 2. Identify the 1-2 directions with the most convergence potential
-3. Provide 3 options (continue with focus / switch mode / pause)
+3. Provide 3 options (continue with focus switch mode pause)
 4. If user chooses to continue but still hasn't converged by round 15 → auto-compile + end
 
 **Recovery Paths**:

@@ -1,0 +1,41 @@
+{
+  "eval_id": 2,
+  "eval_name": "socratic-am",
+  "configuration": "without_skill",
+  "pass_rate": 0.5,
+  "passed": 3,
+  "failed": 3,
+  "total": 6,
+  "expectations": [
+    {
+      "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance",
+      "passed": false,
+      "evidence": "First question: 'what defect or failure mode are you most concerned about?' — problem characterization, not data regime. Second question mentions the 20-30 print budget but asks about the *type* of action (detect vs. predict vs. control), not the data regime cost."
+    },
+    {
+      "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)",
+      "passed": true,
+      "evidence": "Advisor at mid-dialogue: 'With 20-30 prints... Gaussian Process regression is the classic surrogate model for Bayesian optimization — it's probabilistic, handles small datasets well, and quantifies uncertainty.' Budget-to-method connection made with uncertainty quantification stated as the key property."
+    },
+    {
+      "text": "The dialogue includes at least one question about simulation vs. hardware validation scope",
+      "passed": false,
+      "evidence": "Simulation vs. hardware validation scope never explicitly raised. All validation discussion assumes hardware (CT scanning, physical prints). No question asks whether results are expected to generalize beyond this setup or whether simulation plays any role."
+    },
+    {
+      "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)",
+      "passed": true,
+      "evidence": "Student mentions 'trial and error with process parameter sets from the literature'; advisor confirms LHS as the initialization phase. Engineering baseline (process window + LHS DoE) is surfaced through the discussion of BO initialization, though not framed as an explicit 'without ML' question."
+    },
+    {
+      "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'",
+      "passed": true,
+      "evidence": "Entirely technical throughout — defect type, sensor characteristics, data pipeline, ML model selection, cross-validation strategy, class imbalance. No societal framing appears."
+    },
+    {
+      "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope",
+      "passed": false,
+      "evidence": "Output ends with a 'Summary of Key Decisions Made in This Dialogue' table (design task, ML model, validation strategy) and 'Closing: Next Steps'. There is no labeled 'Research Plan Summary' section with the four required components (design task, data regime, method with justification, validation scope) as a unified block."
+    }
+  ]
+}

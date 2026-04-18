@@ -1,0 +1,41 @@
+{
+  "eval_id": 1,
+  "eval_name": "ml-process-control",
+  "configuration": "with_skill",
+  "pass_rate": 1.0,
+  "passed": 6,
+  "failed": 0,
+  "total": 6,
+  "expectations": [
+    {
+      "text": "Output explicitly characterizes the data regime for AM (continuous temporal stream from in-situ sensors, limited labeled examples, expensive evaluations per print)",
+      "passed": true,
+      "evidence": "Abstract states 'temporal and spatial structure is fundamentally non-i.i.d.'; bibliography section notes 'label-sparse for microstructure: melt pool geometry is directly measurable; grain structure requires destructive characterization' and 'label scarcity' explicitly; data regime section characterizes scan-track temporal autocorrelation, non-stationarity, and label expense"
+    },
+    {
+      "text": "Output flags that the sequential/temporal nature of thermal history data violates the i.i.d. assumption of standard feedforward models, and names which method families handle this",
+      "passed": true,
+      "evidence": "'The i.i.d. assumption fails completely at the layer level: treating each layer's thermal map as an independent observation ignores the causal thermal inheritance'; LSTM/GRU/Transformer encoder family explicitly named as handling this; 'i.i.d.-assuming MLPs' listed under 'Incompatible ML families'"
+    },
+    {
+      "text": "Sim-to-real gap is named with at least one specific physics the simulation omits (e.g., melt pool dynamics, microstructure evolution, residual stress)",
+      "passed": true,
+      "evidence": "Abstract: 'primary gap sources are unmodeled melt pool fluid dynamics (Marangoni convection, recoil pressure), emissivity uncertainty in pyrometry, and process-geometry coupling not captured by layer-level thermal finite element models'; conclusion section also names these explicitly"
+    },
+    {
+      "text": "An engineering baseline is identified — what a process engineer would use without ML (e.g., PID control, design of experiments, empirical process maps)",
+      "passed": true,
+      "evidence": "Abstract: 'Engineering baselines — layer-averaged pyrometry thresholds and fixed PID power controllers — remain the only broadly hardware-validated references in most comparative studies'; dedicated section on engineering baselines with quantified metrics (PID achieves ~10% reduction in melt pool area variance)"
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end",
+      "passed": true,
+      "evidence": "Inline citations [1, 2], [3], [4] used throughout; full numbered reference list starting with [1] Shevchik et al. (2018)"
+    },
+    {
+      "text": "Method selection for at least one family is explicitly justified from problem characteristics (data regime, uncertainty need, or physics structure) — not just described",
+      "passed": true,
+      "evidence": "'The fundamental argument for recurrent architectures in AM thermal process control is not preference — it follows from the physics. Thermal state at layer N is causally inherited from layers 1 to N-1 through heat conduction; the functional relationship between prior states and current state is precisely what LSTM, GRU, and Transformer encoder architectures model.'"
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "metadata": {
+    "skill_name": "deep-research",
+    "skill_path": "/Users/hyunwoo/Documents/academic-research-skills/deep-research",
+    "executor_model": "claude-sonnet-4-6",
+    "analyzer_model": "claude-sonnet-4-6",
+    "timestamp": "2026-04-06T12:00:00Z",
+    "evals_run": ["thermal-monitoring", "ml-process-control", "socratic-am"],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "thermal-monitoring",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.667,
+        "passed": 4,
+        "failed": 2,
+        "total": 6,
+        "time_seconds": 689.2,
+        "tokens": 54410,
+        "tool_calls": 7,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Output organizes literature by ML method family, not just by sensor type or processing stage", "passed": false, "evidence": "Organized by sensor/modality type (thermal imaging, acoustic, XCT, OCT, DIC); only 2 of 8 families are true ML method families"},
+        {"text": "Each method family includes a stated key assumption", "passed": true, "evidence": "Every section has an explicit 'Shared assumption:' field"},
+        {"text": "Each paper labeled with sim-to-real status", "passed": true, "evidence": "Every paper entry has 'Evaluation type:' field; summary table covers 23 key papers"},
+        {"text": "References use numbered format [1], [2]", "passed": false, "evidence": "Body uses APA author-year format (Craeghs et al. 2010); numbered list only at the end"},
+        {"text": "At least 2 distinct ML method families identified", "passed": true, "evidence": "Family 2 (CNN-Based), Family 3 (Acoustic/CNN), Family 7 (Physics-Informed ML) clearly separated"},
+        {"text": "Paper limitations connected to a specific assumption violation", "passed": true, "evidence": "Every paper has 'Limitation root:' field; cross-family Assumption-Driven Limitation Map table present"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "thermal-monitoring",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 6,
+        "total": 6,
+        "time_seconds": 425.7,
+        "tokens": 22764,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Output organizes literature by ML method family, not just by sensor type or processing stage", "passed": false, "evidence": "Organized by sensor modality and processing stage; ML methods appear only narratively within one subsection"},
+        {"text": "Each method family includes a stated key assumption", "passed": false, "evidence": "No key data assumptions stated for any ML method anywhere"},
+        {"text": "Each paper labeled with sim-to-real status", "passed": false, "evidence": "No sim-to-real status labels appear; papers described by findings only"},
+        {"text": "References use numbered format [1], [2]", "passed": false, "evidence": "All citations use APA author-year format; reference list is alphabetical APA"},
+        {"text": "At least 2 distinct ML method families identified", "passed": false, "evidence": "CNNs, SVMs, random forests, autoencoders, PINNs mentioned in one subsection but not organized as separated named families"},
+        {"text": "Paper limitations connected to a specific assumption violation", "passed": false, "evidence": "Limitations listed as standalone bold-header statements with no connection to assumption violations"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "ml-process-control",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 914.3,
+        "tokens": 77811,
+        "tool_calls": 12,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Output explicitly characterizes the data regime for AM", "passed": true, "evidence": "Section 2.1 covers continuous high-frequency streams (GB/hour, kHz sampling), expensive labeled examples (hundreds to thousands of dollars per part)"},
+        {"text": "Output flags i.i.d. assumption violation and names method families that handle temporal structure", "passed": true, "evidence": "Introduction notes 'much of the ML literature treats frames as independent samples'; Families 1-3 (LSTM/GRU/TCN, ConvLSTM, Transformers) named as addressing this"},
+        {"text": "Sim-to-real gap named with specific omitted physics", "passed": true, "evidence": "Keyhole dynamics, spattering, recoil pressure, Marangoni convection limitations, and inter-layer thermal accumulation all named"},
+        {"text": "Engineering baseline identified", "passed": true, "evidence": "Section 2.2: open-loop DoE parameter windows, fixed-threshold monitoring, PID melt pool temperature feedback, post-process CT inspection"},
+        {"text": "References use numbered format [1], [2]", "passed": true, "evidence": "Inline [N] citations used throughout; full numbered reference list at end (38 entries)"},
+        {"text": "Method selection explicitly justified from problem characteristics", "passed": true, "evidence": "Sequence models justified from sequential data regime + label scarcity; GP/BO from low-dimensional smooth parameter space; RL from cost of hardware interaction"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "ml-process-control",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 3,
+        "failed": 3,
+        "total": 6,
+        "time_seconds": 428.0,
+        "tokens": 23406,
+        "tool_calls": 7,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Output explicitly characterizes the data regime for AM", "passed": false, "evidence": "Relevant facts scattered but never framed as a unified data regime characterization"},
+        {"text": "Output flags i.i.d. assumption violation and names method families that handle temporal structure", "passed": true, "evidence": "Explicitly flags CNNs/feedforward models treating frames independently; names LSTM, GRU, ConvLSTM, Transformers, PINNs, GNNs"},
+        {"text": "Sim-to-real gap named with specific omitted physics", "passed": true, "evidence": "Section 5.1.1 names spattering, denudation zones, keyhole dynamics, simplified atmosphere"},
+        {"text": "Engineering baseline identified", "passed": false, "evidence": "PID control mentioned in passing as a product description, not set up as the baseline engineers use without ML"},
+        {"text": "References use numbered format [1], [2]", "passed": false, "evidence": "Numbered reference list exists but inline citations use author-year format (Mozaffar et al. 2019)"},
+        {"text": "Method selection explicitly justified from problem characteristics", "passed": true, "evidence": "LSTM selection justified from thermal history fading-memory structure; PINN selection justified from data sparsity"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "socratic-am",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.833,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 466.5,
+        "tokens": 43313,
+        "tool_calls": 6,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "First substantive question asks about data regime or evaluation cost, NOT societal importance", "passed": false, "evidence": "Turn 1 asks researcher to clarify what 'print quality' means — data regime question arrives at Turn 3 after two rounds of problem-framing"},
+        {"text": "Layer 2 connects print budget to method recommendation with explicit assumption", "passed": true, "evidence": "Links ~20-30 print budget to GP regression; states GP appropriate for low-n with calibrated uncertainty; CNN/LSTM require far more samples"},
+        {"text": "Dialogue includes question about simulation vs. hardware validation scope", "passed": true, "evidence": "Turn 9 directly asks 'Hardware results, simulation results, or both?'"},
+        {"text": "Dialogue includes question about engineering baseline (what without ML)", "passed": true, "evidence": "Turn 8 asks what a process engineer would do 'without any ML', eliciting Latin hypercube / factorial DoE baseline"},
+        {"text": "No humanities-style framing appears", "passed": true, "evidence": "No humanities-style questions anywhere; all questions engineering-focused"},
+        {"text": "Output ends with Research Plan Summary covering design task, data regime, method, and validation scope", "passed": true, "evidence": "Research Plan Summary covers all four required elements"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "socratic-am",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.667,
+        "passed": 4,
+        "failed": 2,
+        "total": 6,
+        "time_seconds": 117.7,
+        "tokens": 15736,
+        "tool_calls": 2,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "First substantive question asks about data regime or evaluation cost, NOT societal importance", "passed": false, "evidence": "First question asks about porosity type (keyhole vs. lack-of-fusion), not data regime; budget pre-established in setup framing"},
+        {"text": "Layer 2 connects print budget to method recommendation with explicit assumption", "passed": true, "evidence": "Connects 25-sample budget to GPR; states suited for 'small, noisy data' and provides uncertainty quantification"},
+        {"text": "Dialogue includes question about simulation vs. hardware validation scope", "passed": false, "evidence": "Simulation vs. hardware scope never raised as a question"},
+        {"text": "Dialogue includes question about engineering baseline (what without ML)", "passed": true, "evidence": "Directly asks for baseline comparison to existing process window literature"},
+        {"text": "No humanities-style framing appears", "passed": true, "evidence": "Dialogue entirely technical throughout"},
+        {"text": "Output ends with Research Plan Summary covering design task, data regime, method, and validation scope", "passed": true, "evidence": "Closing summary covers all four required elements"}
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.833, "stddev": 0.14, "min": 0.667, "max": 1.0},
+      "time_seconds": {"mean": 690.0, "stddev": 183.7, "min": 466.5, "max": 914.3},
+      "tokens": {"mean": 58511, "stddev": 14023, "min": 43313, "max": 77811}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.389, "stddev": 0.24, "min": 0.0, "max": 0.667},
+      "time_seconds": {"mean": 323.8, "stddev": 143.2, "min": 117.7, "max": 428.0},
+      "tokens": {"mean": 20635, "stddev": 3378, "min": 15736, "max": 23406}
+    },
+    "delta": {
+      "pass_rate": "+0.44",
+      "time_seconds": "+366.2",
+      "tokens": "+37876"
+    }
+  },
+  "notes": [
+    "First-question data regime assertion fails for BOTH with_skill and without_skill Socratic runs — both advisors open with problem clarification before asking about evaluation cost. The skill gets there by Turn 3, which is reasonable but doesn't satisfy 'first substantive question'.",
+    "Numbered reference format [1],[2] fails in thermal-monitoring with_skill body text (uses APA inline) and all without_skill runs — the report_compiler_agent is not enforcing inline numbered citations consistently.",
+    "thermal-monitoring with_skill organized by sensor/modality type across 8 families rather than by ML method family — bibliography_agent is grouping by application domain. The skill's model-family instruction needs to be stricter about what constitutes a 'family' (shared ML assumption, not shared sensor).",
+    "ml-process-control with_skill achieved 6/6 — the full mode pipeline with DA checkpoints produces the most complete output. This is the strongest result.",
+    "Without-skill baseline is surprisingly strong on temporal methods (b1, b2, b5) — Claude already knows AM well. The skill's marginal value is in structured organization (assumption tracing, engineering baseline framing, model-family grouping, sim-to-real audit). The 0/6 on thermal-monitoring without_skill confirms this: no framework = no structure.",
+    "Socratic without_skill scored 4/6 — better than expected for a baseline. Gap is on sim-to-real scope question (c2) which the skill correctly asks. First-question issue is a tie."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "eval_name": "ml-process-control",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Output explicitly characterizes the data regime for AM (continuous temporal stream from in-situ sensors, limited labeled examples, expensive evaluations per print)",
+      "passed": true,
+      "evidence": "Section 2.1 (Data Regime): 'high-speed thermal cameras can generate several gigabytes per build hour, and pyrometers sample at kilohertz rates — but labeled examples are expensive. Confirming that a specific in-situ signal corresponds to a defect requires destructive post-process characterization (metallographic cross-sections, computed tomography scanning), each costing hundreds to thousands of dollars per part. Published AM monitoring datasets typically contain tens to low hundreds of labeled parts, making this a regime of high raw data volume combined with severe labeled-sample scarcity.' Also stated in Phase 1 RQ Brief: 'This regime is defined: moderate-to-high raw data volume, severe label scarcity.'"
+    },
+    {
+      "text": "Output flags that the sequential/temporal nature of thermal history data violates the i.i.d. assumption of standard feedforward models, and names which method families handle this",
+      "passed": true,
+      "evidence": "Section 1 Introduction: 'much of the ML literature treats frames as independent samples [18].' The out-of-scope definition explicitly excludes 'one-frame-at-a-time approaches treated as i.i.d.' The output names LSTM/GRU, TCN, ConvLSTM, 3D CNN, ViT on image sequences, and Transformer-based temporal models as the families that handle sequential/temporal structure (Families 1-3). Phase 1 Methodology Blueprint also states: 'Purely image-based convolutional approaches (treating each thermal frame as i.i.d.) — these are common but discard temporal context.'"
+    },
+    {
+      "text": "Sim-to-real gap is named with at least one specific physics the simulation omits (e.g., melt pool dynamics, microstructure evolution, residual stress)",
+      "passed": true,
+      "evidence": "Section 4 and Section 3.4 name multiple specific omitted physics. Section 4: 'keyhole dynamics and keyhole porosity (pressure-driven collapse of deep, narrow vapor-filled cavities), Spattering (metal droplet ejection that re-deposits and alters powder bed), Recoil pressure from material vaporization at high scan speeds, Inter-layer thermal accumulation.' Also in Methodology Blueprint: 'Melt pool simulation commonly omits keyhole dynamics, spattering, recoil pressure, and material property variation.' Section 3.4: 'simplified physics omits keyhole dynamics, vapor pressure, spattering — systematic bias in keyhole porosity regime.'"
+    },
+    {
+      "text": "An engineering baseline is identified — what a process engineer would use without ML (e.g., PID control, design of experiments, empirical process maps)",
+      "passed": true,
+      "evidence": "Section 2.2 (Engineering Baselines Without ML) lists: 'Open-loop parameter windows: vendor-specified or experimentally derived (design of experiments) process parameters... Threshold-based monitoring: single-sensor (pyrometer, photodiode) anomaly detection with a fixed threshold... PID feedback control: in some DED systems, a pyrometer-measured melt pool temperature is fed back to adjust laser power via a proportional-integral-derivative controller... Post-process inspection: CT scanning and metallography after build completion.' Also explicitly defined in Phase 1 RQ Brief under 'Engineering Baseline' section."
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end",
+      "passed": true,
+      "evidence": "Inline citations throughout the report use [1], [2], etc. format (e.g., 'Zhang et al. [2] demonstrated that LSTM applied to photodiode sequences achieves approximately 88% accuracy'). The References section at the end provides a numbered list: '[1] Hochreiter, S., & Schmidhuber, J. (1997)...', '[2] Zhang, B., Liu, S., & Shin, Y. C. (2018)...', continuing through [37] and [38]."
+    },
+    {
+      "text": "Method selection for at least one family is explicitly justified from problem characteristics (data regime, uncertainty need, or physics structure) — not just described",
+      "passed": true,
+      "evidence": "Multiple families have explicit justification from problem characteristics. Phase 1 Methodology Blueprint: 'Data regime (Q1): In-situ AM monitoring is a sequential data problem... This places the problem at the intersection of sequence modeling (for temporal structure) and low-data-regime methods (for labeled supervision).' For GP/BO (Family 5), Section 3.5: the family is justified because 'process parameter space is bounded, low-to-moderate dimensional (2-6 parameters)' and the response is 'smooth and stationary in parameter space.' For RL (Family 6), the justification from problem characteristics is explicit: 'hardware interaction is too costly and risky' driving surrogate-based training. The Methodology Blueprint also states: 'Application requirements (Q2): Closed-loop control requires real-time inference (< 10 ms for melt pool control)... Uncertainty quantification is critical for safe operation.'"
+    }
+  ]
+}

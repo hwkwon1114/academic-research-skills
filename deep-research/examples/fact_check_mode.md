@@ -2,7 +2,7 @@
 scenario: Fact-checking claims about Taiwan's higher education
 mode: fact-check
 agents_used:
-  - source_verification_agent
+ - source_verification_agent
 input: User provides 7 claims about Taiwan's higher education
 output: Claim-by-claim verification report + verification summary
 note: This example uses Taiwan HEI data. The fact-check mode works with any topic — just provide claims about your research area (e.g., "US enrollment has declined 15% since 2010", "EU universities spend more on research than US ones").

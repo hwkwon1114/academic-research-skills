@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "socratic-am",
+  "prompt": "Guide my research: I want to use machine learning to improve print quality in metal additive manufacturing by monitoring thermal history from pyrometers and thermal cameras during printing. I'm not sure what ML approach makes sense or how to set up the optimization loop.",
+  "assertions": [
+    {"id": "c0", "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance"},
+    {"id": "c1", "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)"},
+    {"id": "c2", "text": "The dialogue includes at least one question about simulation vs. hardware validation scope"},
+    {"id": "c3", "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)"},
+    {"id": "c4", "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'"},
+    {"id": "c5", "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope"}
+  ]
+}

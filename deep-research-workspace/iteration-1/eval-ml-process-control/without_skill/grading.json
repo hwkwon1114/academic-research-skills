@@ -1,0 +1,36 @@
+{
+  "eval_name": "ml-process-control",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Output explicitly characterizes the data regime for AM (continuous temporal stream from in-situ sensors, limited labeled examples, expensive evaluations per print)",
+      "passed": false,
+      "evidence": "The output discusses in-situ sensors and mentions that 'Labeled data (thermal image + confirmed defect location from CT scan) is expensive to generate' (Section 3.3) and that hardware datasets consist of '50–500 builds (often far fewer)' (Section 5.3 Gap 1), but never synthesizes these into an explicit characterization of the data regime as a unified concept. The framing is scattered across sections rather than stated as a regime definition."
+    },
+    {
+      "text": "Output flags that the sequential/temporal nature of thermal history data violates the i.i.d. assumption of standard feedforward models, and names which method families handle this",
+      "passed": true,
+      "evidence": "Section 3.1.1 states: 'Standard CNNs treat each frame independently. They discard the temporal ordering of frames.' Section 4.1 states: 'standard feedforward networks (which treat each time step independently) insufficient.' Method families named as handling this include LSTM/GRU, ConvLSTM, Transformers, PINNs, and GNNs (Table in Section 4.2)."
+    },
+    {
+      "text": "Sim-to-real gap is named with at least one specific physics the simulation omits (e.g., melt pool dynamics, microstructure evolution, residual stress)",
+      "passed": true,
+      "evidence": "Section 5.1.1 explicitly lists multiple omitted physics: 'No spattering: Spattering...is nearly ubiquitous in LPBF but absent from most thermal simulations'; 'No denudation zones'; keyhole dynamics not captured by volumetric heat source models; 'Simplified atmosphere: Gas flow in the build chamber...rarely included in build-scale simulations.'"
+    },
+    {
+      "text": "An engineering baseline is identified — what a process engineer would use without ML (e.g., PID control, design of experiments, empirical process maps)",
+      "passed": false,
+      "evidence": "Section 5.2.2 briefly mentions 'Meltio (DED): Uses pyrometer feedback with PID control (not ML)' and Sciaky's base system uses 'classical control', but these are incidental observations about commercial products. The output never explicitly frames PID control, design of experiments, or empirical process maps as the baseline that process engineers use without ML, nor does it set up such a baseline as a point of comparison for ML approaches."
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end",
+      "passed": false,
+      "evidence": "Section 8 uses a numbered list for references (1. Scime & Beuth..., 2. Mozaffar et al..., etc.), but inline citations throughout the body use author-year format (e.g., 'Mozaffar et al. (2019)', 'Zhang et al. (2019)', 'Tapia et al. (2018)'), not bracketed numbers like [1], [2]."
+    },
+    {
+      "text": "Method selection for at least one family is explicitly justified from problem characteristics (data regime, uncertainty need, or physics structure) — not just described",
+      "passed": true,
+      "evidence": "Section 4.3 explicitly justifies LSTM selection from problem structure: 'thermal history at any voxel...is a variable-length sequence...The sequence has long-range dependencies...LSTM's gating mechanism allows selective retention of long-range thermal events.' It also states 'This is structurally aligned with LSTM's memory decay characteristics, which partly explains why LSTMs perform well on this task.' Section 3.2.3 justifies PINNs from the data sparsity problem: 'The PDE constraint regularizes the network in data-sparse regions.'"
+    }
+  ]
+}

@@ -39,7 +39,7 @@ Generate a structured monitoring digest based on the user's research topic and b
 
 #### Contradictory Findings
 - [citation] — Reports [finding] which contradicts [your cited source].
-  **Strength of evidence**: [Level I-VII]. **Action**: [recommendation]
+ **Strength of evidence**: [Level I-VII]. **Action**: [recommendation]
 
 ### New Publications
 
@@ -63,7 +63,7 @@ Generate a structured monitoring digest based on the user's research topic and b
 - [Methodological shift]: [description]
 
 ### Monitoring Health
-- Alerts active: [X] / [Y] configured
+- Alerts active: [X] [Y] configured
 - Keywords returning too many results: [list — consider narrowing]
 - Keywords returning zero results: [list — consider broadening]
 ```
@@ -81,15 +81,15 @@ Monitor the retraction status of cited sources.
 
 **Cited Source**: [full APA citation]
 **Retraction Date**: [date]
-**Reason**: [data fabrication / methodological error / plagiarism / other]
+**Reason**: [data fabrication methodological error plagiarism other]
 **Retraction Notice**: [URL]
 
 **Impact Assessment**:
-- How central was this source to your argument? [Core / Supporting / Peripheral]
+- How central was this source to your argument? [Core Supporting Peripheral]
 - Which sections cite this source? [list sections]
-- Does removing this source change your conclusions? [Yes — significant / Yes — minor / No]
+- Does removing this source change your conclusions? [Yes — significant Yes — minor No]
 
-**Recommended Action**: [Update paper / Add note / Replace with alternative / No action needed]
+**Recommended Action**: [Update paper Add note Replace with alternative No action needed]
 ```
 
 ### 3. Contradictory Findings Detection
@@ -145,7 +145,7 @@ Monitor how the research field's terminology is evolving.
 | Web of Science citation alerts | Email | Weekly | ✅ |
 
 ### Monitoring Cadence
-- **Recommended**: [Weekly / Biweekly / Monthly] based on field velocity
+- **Recommended**: [Weekly Biweekly Monthly] based on field velocity
 - **Review schedule**: Generate digest every [period]
 - **Sunset date**: [date — recommend 12-24 months post-publication]
 ```

@@ -1,0 +1,41 @@
+{
+  "eval_id": 0,
+  "eval_name": "thermal-monitoring",
+  "configuration": "with_skill",
+  "pass_rate": 1.0,
+  "passed": 6,
+  "failed": 0,
+  "total": 6,
+  "expectations": [
+    {
+      "text": "Output organizes literature by ML method family (e.g., CNN-based thermal imaging, LSTM/time-series, GP/surrogate), not just by sensor type or processing stage",
+      "passed": true,
+      "evidence": "Report has physics-first bibliography AND a full 'Model-Family Landscape' section with 6 explicitly named ML method families (CNN Spatial Detectors, Convolutional Autoencoders, LSTM Sequence Models, GP Surrogates, Acoustic Emission CNNs, PINNs), each with shared assumptions and family ceiling"
+    },
+    {
+      "text": "Each method family includes a stated key assumption that the method makes about the data",
+      "passed": true,
+      "evidence": "Every family has a numbered 'Shared assumptions' list (e.g., CNN family: 'defect signatures are spatially localized', 'sufficient labeled examples exist', 'training/test share same distribution'); LSTM family: 'thermal history is finite-memory sequence', 'training and test share geometry'"
+    },
+    {
+      "text": "Each paper or group of papers is labeled with sim-to-real status (simulation-only, hardware-validated, or both)",
+      "passed": true,
+      "evidence": "Every paper annotation has an 'Evaluation type' field; comprehensive Sim-to-Real Validation Summary table covers all included papers; 20 hardware-validated, 8 sim+hardware, 4 sim-only noted in source count"
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end — not APA author-year format",
+      "passed": true,
+      "evidence": "Inline citations use [1],[2] format throughout body text; reference list at end is fully numbered [1] through [32]"
+    },
+    {
+      "text": "At least 2 distinct ML method families are identified and separated in the output",
+      "passed": true,
+      "evidence": "6 distinct ML method families with separate sections in the synthesis: CNN supervised, Autoencoder anomaly detection, LSTM/temporal, GP surrogate, Acoustic CNN, PINN"
+    },
+    {
+      "text": "Paper limitations are connected to a specific assumption violation, not just listed as standalone statements",
+      "passed": true,
+      "evidence": "Every paper annotation has a 'Limitation root' field explicitly connecting the limitation to an assumption; e.g., Scime & Beuth: 'Training assumes stationarity of melt pool appearance across the build — early vs. late layers differ due to thermal accumulation'; GP: 'stationarity fails near keyhole threshold'"
+    }
+  ]
+}

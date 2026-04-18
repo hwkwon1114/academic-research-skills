@@ -1,0 +1,41 @@
+{
+  "eval_id": 0,
+  "eval_name": "thermal-monitoring",
+  "configuration": "without_skill",
+  "pass_rate": 0.167,
+  "passed": 1,
+  "failed": 5,
+  "total": 6,
+  "expectations": [
+    {
+      "text": "Output organizes literature by ML method family (e.g., CNN-based thermal imaging, LSTM/time-series, GP/surrogate), not just by sensor type or processing stage",
+      "passed": false,
+      "evidence": "Primary organization is by sensor modality (Section 2: Thermal Imaging, Section 3: Acoustic, Section 4: X-Ray, etc.); Section 5 has ML subsections (5.2 Classical ML, 5.3 CNNs, 5.4 Recurrent, 5.5 PINNs) but these are narrative paragraphs, not model families with shared assumptions"
+    },
+    {
+      "text": "Each method family includes a stated key assumption that the method makes about the data",
+      "passed": false,
+      "evidence": "No 'key assumption' field or shared assumption list for any method group; ML methods described by what they do, not what they assume"
+    },
+    {
+      "text": "Each paper or group of papers is labeled with sim-to-real status (simulation-only, hardware-validated, or both)",
+      "passed": false,
+      "evidence": "No sim-to-real status labels on any paper; papers described by findings only; no validation summary table"
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end — not APA author-year format",
+      "passed": false,
+      "evidence": "APA author-year format throughout body text (Grasso and Colosimo, 2017; Everton et al., 2016; Craeghs et al., 2010); reference list at end is alphabetical APA format"
+    },
+    {
+      "text": "At least 2 distinct ML method families are identified and separated in the output",
+      "passed": true,
+      "evidence": "Section 5.3 'Deep Learning: CNNs and Autoencoders' and Section 5.4 'Recurrent Networks and Time-Series Models' are separate subsections covering at least 2 distinct ML approaches"
+    },
+    {
+      "text": "Paper limitations are connected to a specific assumption violation, not just listed as standalone statements",
+      "passed": false,
+      "evidence": "Limitations appear as narrative observations within paragraphs (e.g., 'emissivity calibration remains critical') with no connection to assumption violations; no 'limitation root' attribution"
+    }
+  ]
+}

@@ -39,19 +39,19 @@ Standard output format for `quick` mode research. Concise, actionable, evidence-
 ### Finding 1: [Title]
 [2-3 sentences with citation(s)]
 
-**Evidence strength**: [Strong / Moderate / Emerging]
+**Evidence strength**: [Strong Moderate Emerging]
 **Source(s)**: [Brief citation]
 
 ### Finding 2: [Title]
 [2-3 sentences with citation(s)]
 
-**Evidence strength**: [Strong / Moderate / Emerging]
+**Evidence strength**: [Strong Moderate Emerging]
 **Source(s)**: [Brief citation]
 
 ### Finding 3: [Title]
 [2-3 sentences with citation(s)]
 
-**Evidence strength**: [Strong / Moderate / Emerging]
+**Evidence strength**: [Strong Moderate Emerging]
 **Source(s)**: [Brief citation]
 
 [Add more findings as needed, typically 3-5]

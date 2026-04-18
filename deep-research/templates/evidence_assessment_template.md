@@ -11,7 +11,7 @@ Per-source quality assessment card. Used by the source_verification_agent to sys
 ### Source Identification
 - **Citation (APA 7.0)**: [full reference]
 - **DOI/URL**: [link]
-- **Type**: [journal article / book / report / web / conference paper / thesis / other]
+- **Type**: [journal article book report web conference paper thesis other]
 - **Access Date**: [when verified]
 
 ---
@@ -19,17 +19,17 @@ Per-source quality assessment card. Used by the source_verification_agent to sys
 ### Quality Assessment
 
 #### 1. Evidence Level
-**Level**: [I / II / III / IV / V / VI / VII]
+**Level**: [I II III IV V VI VII]
 **Justification**: [why this level]
 
 #### 2. Publication Venue
 - **Journal/Publisher**: [name]
-- **Indexed in**: [Scopus / WoS / PubMed / DOAJ / other / none]
+- **Indexed in**: [Scopus WoS PubMed DOAJ other none]
 - **Impact Factor/CiteScore**: [value or N/A]
-- **COPE member**: [Yes / No / Unknown]
-- **Predatory indicators**: [None / Flags: list]
+- **COPE member**: [Yes No Unknown]
+- **Predatory indicators**: [None Flags: list]
 
-**Venue Grade**: [Excellent / Good / Adequate / Questionable / Unacceptable]
+**Venue Grade**: [Excellent Good Adequate Questionable Unacceptable]
 
 #### 3. Author Credibility
 - **Author(s)**: [names]
@@ -38,31 +38,31 @@ Per-source quality assessment card. Used by the source_verification_agent to sys
 - **Track record**: [publication history in field]
 - **Expertise match**: [relevant to topic? Yes/Partial/No]
 
-**Author Grade**: [Excellent / Good / Adequate / Unknown / Questionable]
+**Author Grade**: [Excellent Good Adequate Unknown Questionable]
 
 #### 4. Methodological Quality
 - **Design**: [description]
 - **Sample**: [size, selection, representativeness]
 - **Analysis**: [appropriate for design?]
-- **Limitations acknowledged**: [Yes / Partially / No]
-- **Replicable**: [Yes / Partially / No]
+- **Limitations acknowledged**: [Yes Partially No]
+- **Replicable**: [Yes Partially No]
 
-**Method Grade**: [Excellent / Good / Adequate / Weak / Flawed]
+**Method Grade**: [Excellent Good Adequate Weak Flawed]
 
 #### 5. Currency
 - **Publication year**: [YYYY]
 - **Data collection period**: [if stated]
-- **Field velocity**: [Rapid / Moderate / Slow / Foundational]
-- **Still current**: [Yes / Conditionally / No]
+- **Field velocity**: [Rapid Moderate Slow Foundational]
+- **Still current**: [Yes Conditionally No]
 
-**Currency Grade**: [Current / Acceptable / Dated / Outdated / Foundational]
+**Currency Grade**: [Current Acceptable Dated Outdated Foundational]
 
 #### 6. Conflict of Interest
-- **Declared COI**: [None / Listed: details]
+- **Declared COI**: [None Listed: details]
 - **Funding source**: [source or Not stated]
-- **Potential undeclared COI**: [None detected / Possible: details]
+- **Potential undeclared COI**: [None detected Possible: details]
 
-**COI Grade**: [Clean / Minor / Moderate / Significant / Critical]
+**COI Grade**: [Clean Minor Moderate Significant Critical]
 
 ---
 
@@ -76,7 +76,7 @@ Per-source quality assessment card. Used by the source_verification_agent to sys
 | Method | [Excellent-Flawed] |
 | Currency | [Current-Outdated] |
 | COI | [Clean-Critical] |
-| **Overall** | **[A / B / C / D / F]** |
+| **Overall** | **[A B C D F]** |
 
 ### Recommendation
 - [ ] **Use as primary evidence** (Grade A-B)
@@ -109,14 +109,14 @@ Per-source quality assessment card. Used by the source_verification_agent to sys
 ### Flagged Sources
 | Source | Issue | Severity | Recommendation |
 |--------|-------|----------|---------------|
-| [ref] | [issue] | [High/Medium/Low] | [Include with caveat / Exclude] |
+| [ref] | [issue] | [High/Medium/Low] | [Include with caveat Exclude] |
 
 ### Predatory Journal Alerts
 [List any flagged journals]
 
 ### Overall Source Base Quality
-**Assessment**: [Strong / Adequate / Mixed / Weak]
-**Recommendation**: [Proceed / Supplement / Major revision of source base needed]
+**Assessment**: [Strong Adequate Mixed Weak]
+**Recommendation**: [Proceed Supplement Major revision of source base needed]
 ```
 
 ## Usage Notes

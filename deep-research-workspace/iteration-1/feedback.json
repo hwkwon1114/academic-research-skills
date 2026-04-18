@@ -1,0 +1,10 @@
+{
+  "reviews": [
+    {
+      "run_id": "eval-thermal-monitoring-with_skill",
+      "feedback": "we should find a way to find more recent research from 2025-2026. Also, I want mostly thinking in terms of what types of physics based assumption we should make about additive manufacturing in order to build a statistical or machine learning model on doing process control in additive manufacturing. It would have been more interesting to know more about what we could do with the data collected from the different sources. It would have been good to get an overview of what types of metrics people look at such as cooling rate or heat treatment time or residual stress etc. Still the organization itself could be given freedom in terms of what are the gaps and what can be improved. ",
+      "timestamp": "2026-04-06T16:28:38.369Z"
+    }
+  ],
+  "status": "in_progress"
+}

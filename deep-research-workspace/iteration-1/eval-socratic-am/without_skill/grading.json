@@ -1,0 +1,36 @@
+{
+  "eval_name": "socratic-am",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance",
+      "passed": false,
+      "evidence": "The first substantive question from the advisor is 'what kind of porosity are you worried about?' (keyhole vs. lack-of-fusion). This is a technical/physics question about porosity type, not about data regime, evaluation cost, or sensor availability. The data regime (~20-30 prints) was established in the setup framing, not elicited by the first question."
+    },
+    {
+      "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)",
+      "passed": true,
+      "evidence": "Advisor says: 'You're not going to train a deep neural network on 25 samples. So what are your options?' then explicitly endorses GPR: 'GPR is a strong choice for small, noisy data, especially if you care about uncertainty quantification — which you should, because if you want to use this model in an optimization loop, you need to know where the model is confident.' The print budget constraint directly drives the method recommendation."
+    },
+    {
+      "text": "The dialogue includes at least one question about simulation vs. hardware validation scope",
+      "passed": false,
+      "evidence": "The dialogue never raises simulation as a topic or asks about simulation vs. hardware validation scope. Transfer learning from simulations is briefly mentioned by the student as one option ('borrowing from a model trained on simulations'), but the advisor does not pursue it or ask about simulation vs. hardware validation scope."
+    },
+    {
+      "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)",
+      "passed": true,
+      "evidence": "Advisor explicitly asks: 'What's the baseline you're comparing against? How do you show that your ML-guided approach did something better than just reading the process window from the existing literature?' This directly probes the engineering baseline."
+    },
+    {
+      "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'",
+      "passed": true,
+      "evidence": "The entire dialogue stays focused on technical specifics: porosity types, sensor features, ground truth measurement, ML model selection, experimental design, and optimization loops. No motivational, societal, or policy-level questions appear."
+    },
+    {
+      "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope",
+      "passed": true,
+      "evidence": "The 'Summary: Where the Researcher Has Landed' section includes: design task (SLM parameter optimization for porosity), data regime (12-point LHS DOE + ~15 BO iterations, ~25 prints total), method selection with justification (GPR for prediction/optimization 'for small, noisy data' + random forest for interpretability), and validation scope (confirmation print, baseline comparison against random sampling, predicted response surface)."
+    }
+  ]
+}

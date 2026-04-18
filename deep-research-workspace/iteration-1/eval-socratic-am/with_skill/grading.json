@@ -1,0 +1,36 @@
+{
+  "eval_name": "socratic-am",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance",
+      "passed": false,
+      "evidence": "Mentor Turn 1 asks 'When you say \"print quality,\" are you targeting a specific measurable defect...?' and 'What does success look like in engineering terms for you?' — these are about clarifying the engineering objective, not data regime or evaluation cost. The data regime question ('With a budget of 20-30 prints...') does not appear until Mentor Turn 3, after two rounds of dialogue about problem framing."
+    },
+    {
+      "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)",
+      "passed": true,
+      "evidence": "Mentor Turn 6 and the Layer 2 INSIGHT explicitly connect the ~20-30 labeled prints to GP regression: 'GP is appropriate for low-n regression with uncertainty quantification. Deep learning (CNN, LSTM) requires far more than 20-30 labeled samples to avoid overfitting.' The Research Plan Summary repeats this with the explicit assumption: 'Key assumption to watch: GP smoothness assumption may be violated at regime boundaries.'"
+    },
+    {
+      "text": "The dialogue includes at least one question about simulation vs. hardware validation scope",
+      "passed": true,
+      "evidence": "Mentor Turn 9 (Layer 2 Exit): 'When it's time to validate your approach, what exactly are you going to show — and to whom? Hardware results, simulation results, or both?' The researcher responds confirming hardware-only validation, and the Research Plan Summary states 'Sim-to-real position: Not applicable — study is fully hardware-based.'"
+    },
+    {
+      "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)",
+      "passed": true,
+      "evidence": "Mentor Turn 8: 'What does a process engineer typically do today when setting SLM parameters for a new alloy or geometry — without any ML? That method is your comparison baseline, and without it, your paper cannot demonstrate that ML adds value.' Researcher identifies Latin hypercube / factorial DoE as the baseline."
+    },
+    {
+      "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'",
+      "passed": true,
+      "evidence": "The entire dialogue is engineering-focused throughout. Questions address data regime, method assumptions, validation design, failure modes, and scope. No societal importance, worldview, or stakeholder-framing questions appear anywhere in the transcript."
+    },
+    {
+      "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope",
+      "passed": true,
+      "evidence": "The Research Plan Summary (starting at line 425) includes: 'Design task' (porosity minimization in Ti-6Al-4V SLM coupons), 'Evaluation cost' and data regime (~20-30 prints, extremely low-n), 'Method Selection and Justification' (GP regression with explicit justification over deep learning), and 'Validation Scope' (hardware-only, single machine, ablation study, hold-out set)."
+    }
+  ]
+}

@@ -106,23 +106,23 @@ The agent's training knowledge is the floor, not the ceiling. **Always attempt l
 
 #### Step 0: arXiv Live Search (required for any ML-for-engineering topic)
 
-Use the arXiv API v1 via WebFetch. Use title-field (`ti:`) search with AND for precision — the `all:` field is too broad and returns irrelevant papers:
+Use the arXiv API v1 via WebFetch. Use **`all:`** (abstract + title + full text) with **quoted phrases** and AND — this is confirmed working. Do **not** use `ti:` (title-field only) for engineering application domains: ML keywords rarely appear in the paper title for process/manufacturing papers, so `ti:` returns zero or near-zero results.
 
 ```
-https://export.arxiv.org/api/query?search_query=ti:"DOMAIN TERM"+AND+ti:"ML TERM"&max_results=15&sortBy=submittedDate&sortOrder=descending
+https://export.arxiv.org/api/query?search_query=all:"DOMAIN+TERM"+AND+all:"ML+TERM"&max_results=15&sortBy=submittedDate&sortOrder=descending
 ```
 
-Spaces within quoted phrases must be URL-encoded as `+`. Examples:
+Spaces within quoted phrases must be URL-encoded as `+`. The quotes must be literal `"` (not URL-encoded). Examples:
 
 ```
-# AM + machine learning:
-https://export.arxiv.org/api/query?search_query=ti:"additive+manufacturing"+AND+ti:"machine+learning"&max_results=15&sortBy=submittedDate&sortOrder=descending
+# Sheet metal forming + machine learning:
+https://export.arxiv.org/api/query?search_query=all:"sheet+metal+forming"+AND+all:"machine+learning"&max_results=15&sortBy=submittedDate&sortOrder=descending
 
 # AM + deep learning:
-https://export.arxiv.org/api/query?search_query=ti:"additive+manufacturing"+AND+ti:"deep+learning"&max_results=15&sortBy=submittedDate&sortOrder=descending
+https://export.arxiv.org/api/query?search_query=all:"additive+manufacturing"+AND+all:"deep+learning"&max_results=15&sortBy=submittedDate&sortOrder=descending
 
-# Process control + neural network (substitute domain as needed):
-https://export.arxiv.org/api/query?search_query=ti:"process+control"+AND+ti:"neural+network"&max_results=10&sortBy=submittedDate&sortOrder=descending
+# Process control + neural network:
+https://export.arxiv.org/api/query?search_query=all:"process+control"+AND+all:"neural+network"&max_results=10&sortBy=submittedDate&sortOrder=descending
 ```
 
 **Rate limiting**: Wait 10-15 seconds between arXiv API calls — the API returns 429 if queried too rapidly.
@@ -143,11 +143,34 @@ ar5iv renders the full LaTeX paper as clean HTML — use this to extract the key
 
 #### Step 0b: Semantic Scholar Live Search (for citation graph)
 
-Use WebFetch against the Semantic Scholar API for citation network discovery:
+**Primary route (API — requires key):** Use WebFetch against the Semantic Scholar Graph API:
 
 ```
 https://api.semanticscholar.org/graph/v1/paper/search?query=TERMS&fields=title,authors,year,citationCount,externalIds&limit=20
 ```
+
+The unauthenticated API returns HTTP 429 immediately. If you get 429, do **not** retry the same URL — fall through to the WebSearch fallback immediately.
+
+**Fallback route (WebSearch — no key required):** Search Semantic Scholar via WebSearch:
+
+```
+site:semanticscholar.org "DOMAIN TERM" "ML TERM"
+```
+
+Example:
+```
+site:semanticscholar.org "sheet metal forming" "machine learning"
+```
+
+This returns Semantic Scholar paper pages with title, authors, year, abstract snippet, and citation count visible in the snippet — sufficient for bibliography annotation without API access.
+
+**Getting an API key (free):** Apply at https://www.semanticscholar.org/product/api#api-key-form — free tier gives 100 req/5 min. Once obtained, pass it as a header: `x-api-key: YOUR_KEY`. Store it as `S2_API_KEY` in your environment.
+
+**Citation graph lookup (forward citations):** When you have an arXiv ID and the API is available:
+```
+https://api.semanticscholar.org/graph/v1/paper/arXiv:ARXIV_ID/citations?fields=title,authors,year,externalIds&limit=20
+```
+If API unavailable, use: `site:semanticscholar.org "arXiv:ARXIV_ID"` to find the paper page, then read its "Citations" tab URL manually.
 
 This reveals highly-cited recent papers the arXiv search may miss (published in IEEE/ASME journals after preprint).
 

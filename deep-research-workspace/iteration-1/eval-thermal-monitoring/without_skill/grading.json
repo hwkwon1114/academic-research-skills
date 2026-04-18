@@ -1,0 +1,36 @@
+{
+  "eval_name": "thermal-monitoring",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Output organizes literature by ML method family (e.g., CNN-based thermal imaging, LSTM/time-series, GP/surrogate), not just by sensor type or processing stage",
+      "passed": false,
+      "evidence": "The output is organized entirely by sensor modality (Sections 3.1–3.7: thermal imaging, optical imaging, X-ray, acoustic emission, OCT, spectroscopy, strain sensing) and processing stage (Section 4: SPC, computer vision, ML, sensor fusion). ML methods are briefly enumerated in Section 4.3 but the literature is not reorganized around ML method families."
+    },
+    {
+      "text": "Each method family includes a stated key assumption that the method makes about the data",
+      "passed": false,
+      "evidence": "No key assumptions are stated for any ML method family. The output discusses what each sensor or algorithm does and reports accuracy results, but never explicitly states the data assumptions underlying any method (e.g., stationarity, spatial locality, Gaussian noise)."
+    },
+    {
+      "text": "Each paper or group of papers is labeled with sim-to-real status (simulation-only, hardware-validated, or both)",
+      "passed": false,
+      "evidence": "No sim-to-real labels appear anywhere in the output. Papers are described by their experimental findings (e.g., 'Cunningham et al. (2019) used synchrotron X-ray imaging') but are never tagged as simulation-only, hardware-validated, or both."
+    },
+    {
+      "text": "References use numbered format [1], [2] inline with a numbered list at the end — not APA author-year format",
+      "passed": false,
+      "evidence": "All inline citations use APA author-year format, e.g., 'Grasso and Colosimo (2017)', 'Carroll et al., 2015'. The reference list at the end is alphabetically ordered in APA style (e.g., 'Bartlett, J. L., & Li, X. (2019)...'), not a numbered list."
+    },
+    {
+      "text": "At least 2 distinct ML method families are identified and separated in the output",
+      "passed": false,
+      "evidence": "Section 4.3 mentions CNNs, SVMs, random forests, autoencoders, and PINNs within a single flowing subsection, but they are not separated into distinct named families with their own headers or clearly delineated groupings. No family-level organization is applied."
+    },
+    {
+      "text": "Paper limitations are connected to a specific assumption violation, not just listed as standalone statements",
+      "passed": false,
+      "evidence": "Section 7 lists limitations as standalone statements under bold headers (e.g., 'Calibration and emissivity', 'Subsurface sensitivity', 'Labeled data scarcity', 'Generalization across machines and materials'). None of these are linked to a violated assumption of a specific ML or sensing method."
+    }
+  ]
+}

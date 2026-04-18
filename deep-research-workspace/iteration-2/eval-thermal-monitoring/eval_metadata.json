@@ -1,0 +1,13 @@
+{
+  "eval_id": 0,
+  "eval_name": "thermal-monitoring",
+  "prompt": "Literature review on in-situ monitoring and evaluation methods for thermal and mechanical history in metal additive manufacturing. What sensor modalities and data types do researchers use to characterize the process, and how is this data used to detect defects or predict part quality?",
+  "assertions": [
+    {"id": "a0", "text": "Output organizes literature by ML method family (e.g., CNN-based thermal imaging, LSTM/time-series, GP/surrogate), not just by sensor type or processing stage"},
+    {"id": "a1", "text": "Each method family includes a stated key assumption that the method makes about the data"},
+    {"id": "a2", "text": "Each paper or group of papers is labeled with sim-to-real status (simulation-only, hardware-validated, or both)"},
+    {"id": "a3", "text": "References use numbered format [1], [2] inline with a numbered list at the end — not APA author-year format"},
+    {"id": "a4", "text": "At least 2 distinct ML method families are identified and separated in the output"},
+    {"id": "a5", "text": "Paper limitations are connected to a specific assumption violation, not just listed as standalone statements"}
+  ]
+}

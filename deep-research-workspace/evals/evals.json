@@ -1,0 +1,50 @@
+{
+  "skill_name": "deep-research",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "thermal-monitoring",
+      "prompt": "Literature review on in-situ monitoring and evaluation methods for thermal and mechanical history in metal additive manufacturing. What sensor modalities and data types do researchers use to characterize the process, and how is this data used to detect defects or predict part quality?",
+      "expected_output": "Organized literature review grouping papers by ML method family (thermal imaging CNNs, time-series/sequential models, physics-based/surrogate models), with assumption annotations per paper, sim-to-real status documented for each paper, and plain markdown output with numbered references.",
+      "files": [],
+      "assertions": [
+        {"id": "a0", "text": "Output organizes literature by ML method family (e.g., CNN-based thermal imaging, LSTM/time-series, GP/surrogate), not just by sensor type or processing stage"},
+        {"id": "a1", "text": "Each method family includes a stated key assumption that the method makes about the data"},
+        {"id": "a2", "text": "Each paper or group of papers is labeled with sim-to-real status (simulation-only, hardware-validated, or both)"},
+        {"id": "a3", "text": "References use numbered format [1], [2] inline with a numbered list at the end — not APA author-year format"},
+        {"id": "a4", "text": "At least 2 distinct ML method families are identified and separated in the output"},
+        {"id": "a5", "text": "Paper limitations are connected to a specific assumption violation, not just listed as standalone statements"}
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "ml-process-control",
+      "prompt": "What ML methods are used to control and optimize metal additive manufacturing by monitoring in-situ thermal and mechanical measurements? I need to understand what handles the sequential/temporal nature of thermal history data, and what the current gaps are between simulation-based and hardware-validated approaches.",
+      "expected_output": "Method selection justified from data regime, assumption annotation for each method family, explicit sim-to-real gap taxonomy, engineering baseline identified, numbered references.",
+      "files": [],
+      "assertions": [
+        {"id": "b0", "text": "Output explicitly characterizes the data regime for AM (continuous temporal stream from in-situ sensors, limited labeled examples, expensive evaluations per print)"},
+        {"id": "b1", "text": "Output flags that the sequential/temporal nature of thermal history data violates the i.i.d. assumption of standard feedforward models, and names which method families handle this"},
+        {"id": "b2", "text": "Sim-to-real gap is named with at least one specific physics the simulation omits (e.g., melt pool dynamics, microstructure evolution, residual stress)"},
+        {"id": "b3", "text": "An engineering baseline is identified — what a process engineer would use without ML (e.g., PID control, design of experiments, empirical process maps)"},
+        {"id": "b4", "text": "References use numbered format [1], [2] inline with a numbered list at the end"},
+        {"id": "b5", "text": "Method selection for at least one family is explicitly justified from problem characteristics (data regime, uncertainty need, or physics structure) — not just described"}
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "socratic-am",
+      "prompt": "Guide my research: I want to use machine learning to improve print quality in metal additive manufacturing by monitoring thermal history from pyrometers and thermal cameras during printing. I'm not sure what ML approach makes sense or how to set up the optimization loop.",
+      "expected_output": "Socratic dialogue with engineering-specific layers: Layer 1 asks about data regime/cost, Layer 2 connects method to budget, Layer 3 asks about validation scope. No humanities framing. Ends with Research Plan Summary.",
+      "files": [],
+      "assertions": [
+        {"id": "c0", "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance"},
+        {"id": "c1", "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)"},
+        {"id": "c2", "text": "The dialogue includes at least one question about simulation vs. hardware validation scope"},
+        {"id": "c3", "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)"},
+        {"id": "c4", "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'"},
+        {"id": "c5", "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope"}
+      ]
+    }
+  ]
+}

@@ -86,9 +86,9 @@ RSS (Really Simple Syndication) allows you to subscribe to content updates from 
 
 | Reader | Platform | Cost | Best For |
 |--------|----------|------|----------|
-| **Feedly** | Web, iOS, Android | Free (basic) / $6/mo (Pro) | Organized categorization, AI features |
-| **Inoreader** | Web, iOS, Android | Free (basic) / $5/mo (Pro) | Power users, rules/filters |
-| **NewsBlur** | Web, iOS, Android | Free (limited) / $36/yr | Open source option |
+| **Feedly** | Web, iOS, Android | Free (basic) $6/mo (Pro) | Organized categorization, AI features |
+| **Inoreader** | Web, iOS, Android | Free (basic) $5/mo (Pro) | Power users, rules/filters |
+| **NewsBlur** | Web, iOS, Android | Free (limited) $36/yr | Open source option |
 | **Zotero RSS** | Desktop | Free | Integrates with reference manager |
 
 ---
@@ -136,7 +136,7 @@ RSS (Really Simple Syndication) allows you to subscribe to content updates from 
 - **Alert service**: Email notifications for new papers in subscribed networks
 - **Note**: Now owned by Elsevier; some content behind paywall
 
-### bioRxiv / medRxiv
+### bioRxiv medRxiv
 
 - **Coverage**: Biology (bioRxiv) and health sciences (medRxiv)
 - **Monitoring**: RSS feeds by subject area

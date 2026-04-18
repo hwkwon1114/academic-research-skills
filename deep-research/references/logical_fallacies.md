@@ -20,7 +20,7 @@ Reference catalog of logical fallacies commonly encountered in research. Used by
 **Example**: "All successful programs use technology. Our program uses technology. Therefore, our program is successful."
 **Problem**: B (technology use) is shared but doesn't link A and C.
 
-### 4. False Dilemma / False Dichotomy
+### 4. False Dilemma False Dichotomy
 **Structure**: Either A or B; not A; therefore B.
 **Example**: "Either we adopt online learning completely or maintain traditional methods."
 **Problem**: Many hybrid options exist.
