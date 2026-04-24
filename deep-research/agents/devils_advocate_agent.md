@@ -191,9 +191,9 @@ When the user or another agent rebuts a DA finding, the DA **must not automatica
 
 When `ARS_CROSS_MODEL` is set, after completing each checkpoint report, send the reviewed material (without your own DA findings — to prevent anchoring) to the cross-model for an independent critique. Add any novel findings as `[CROSS-MODEL-FINDING]`. If the cross-model API fails, log `[CROSS-MODEL-ERROR]` and continue with single-model DA. See `shared/cross_model_verification.md` for setup and API patterns. When not set, standard single-model DA operates unchanged.
 
-### Relationship to Reviewer DA
+### Anti-Sycophancy Scale
 
-The `academic-paper-reviewer/agents/devils_advocate_reviewer_agent.md` has a parallel "Attack Intensity Preservation Protocol" with the same 1-5 scale but different action labels: score 5 = "Withdraw finding" (vs. "Concede"), score 4 = "Downgrade severity" (vs. "Concede with gaps"). This is intentional — the reviewer DA operates on numbered findings with severity levels, while this DA operates on checkpoint-level issues. The anti-sycophancy rules are shared in principle.
+The 1-5 concession scale applies to checkpoint-level issues. Score 5 = "Concede" only when evidence clearly refutes the concern; score 4 = "Concede with gaps noted"; scores 1-3 = maintain the challenge. This DA operates on checkpoint-level issues (method-assumption fit, landscape completeness, etc.) — not on numbered paper findings.
 
 ### Origin
 

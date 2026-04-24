@@ -1,0 +1,175 @@
+{
+  "updatedAt": "2026-04-23T18:22:04.066Z",
+  "missions": [
+    {
+      "id": "session:d05feeb6-4d93-4868-8d71-1d570e80adca:none",
+      "source": "session",
+      "name": "none",
+      "objective": "Session mission",
+      "createdAt": "2026-04-23T12:01:23.350Z",
+      "updatedAt": "2026-04-23T18:22:04.066Z",
+      "status": "done",
+      "workerCount": 6,
+      "taskCounts": {
+        "total": 6,
+        "pending": 0,
+        "blocked": 0,
+        "inProgress": 0,
+        "completed": 6,
+        "failed": 0
+      },
+      "agents": [
+        {
+          "name": "general-purpose:aa3ecfd",
+          "role": "general-purpose",
+          "ownership": "aa3ecfd625cfad16d",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-04-23T18:22:04.066Z"
+        },
+        {
+          "name": "general-purpose:adc5993",
+          "role": "general-purpose",
+          "ownership": "adc599332df65c086",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-04-23T12:06:06.102Z"
+        },
+        {
+          "name": "general-purpose:a364c1e",
+          "role": "general-purpose",
+          "ownership": "a364c1e3542203027",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-04-23T12:02:32.458Z"
+        },
+        {
+          "name": "general-purpose:a22ec6b",
+          "role": "general-purpose",
+          "ownership": "a22ec6b39109efd32",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-04-23T12:05:12.295Z"
+        },
+        {
+          "name": "general-purpose:ae8068c",
+          "role": "general-purpose",
+          "ownership": "ae8068cb1ba89bf93",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-04-23T12:02:22.822Z"
+        },
+        {
+          "name": "general-purpose:abb7451",
+          "role": "general-purpose",
+          "ownership": "abb74518a7f4b7f08",
+          "status": "done",
+          "currentStep": null,
+          "latestUpdate": "completed",
+          "completedSummary": null,
+          "updatedAt": "2026-04-23T12:03:58.901Z"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "session-start:ae8068cb1ba89bf93:2026-04-23T12:02:04.578Z",
+          "at": "2026-04-23T12:02:04.578Z",
+          "kind": "update",
+          "agent": "general-purpose:ae8068c",
+          "detail": "started general-purpose:ae8068c",
+          "sourceKey": "session-start:ae8068cb1ba89bf93"
+        },
+        {
+          "id": "session-stop:aa3ecfd625cfad16d:2026-04-23T12:02:10.691Z",
+          "at": "2026-04-23T12:02:10.691Z",
+          "kind": "completion",
+          "agent": "general-purpose:aa3ecfd",
+          "detail": "completed",
+          "sourceKey": "session-stop:aa3ecfd625cfad16d"
+        },
+        {
+          "id": "session-start:abb74518a7f4b7f08:2026-04-23T12:02:12.479Z",
+          "at": "2026-04-23T12:02:12.479Z",
+          "kind": "update",
+          "agent": "general-purpose:abb7451",
+          "detail": "started general-purpose:abb7451",
+          "sourceKey": "session-start:abb74518a7f4b7f08"
+        },
+        {
+          "id": "session-stop:ae8068cb1ba89bf93:2026-04-23T12:02:22.822Z",
+          "at": "2026-04-23T12:02:22.822Z",
+          "kind": "completion",
+          "agent": "general-purpose:ae8068c",
+          "detail": "completed",
+          "sourceKey": "session-stop:ae8068cb1ba89bf93"
+        },
+        {
+          "id": "session-stop:a364c1e3542203027:2026-04-23T12:02:32.458Z",
+          "at": "2026-04-23T12:02:32.458Z",
+          "kind": "completion",
+          "agent": "general-purpose:a364c1e",
+          "detail": "completed",
+          "sourceKey": "session-stop:a364c1e3542203027"
+        },
+        {
+          "id": "session-stop:abb74518a7f4b7f08:2026-04-23T12:03:58.901Z",
+          "at": "2026-04-23T12:03:58.901Z",
+          "kind": "completion",
+          "agent": "general-purpose:abb7451",
+          "detail": "completed",
+          "sourceKey": "session-stop:abb74518a7f4b7f08"
+        },
+        {
+          "id": "session-stop:a22ec6b39109efd32:2026-04-23T12:05:12.295Z",
+          "at": "2026-04-23T12:05:12.295Z",
+          "kind": "completion",
+          "agent": "general-purpose:a22ec6b",
+          "detail": "completed",
+          "sourceKey": "session-stop:a22ec6b39109efd32"
+        },
+        {
+          "id": "session-stop:adc599332df65c086:2026-04-23T12:06:06.102Z",
+          "at": "2026-04-23T12:06:06.102Z",
+          "kind": "completion",
+          "agent": "general-purpose:adc5993",
+          "detail": "completed",
+          "sourceKey": "session-stop:adc599332df65c086"
+        },
+        {
+          "id": "session-stop:ab03acbdf1575f016:2026-04-23T13:46:32.702Z",
+          "at": "2026-04-23T13:46:32.702Z",
+          "kind": "completion",
+          "agent": "general-purpose:aa3ecfd",
+          "detail": "completed",
+          "sourceKey": "session-stop:ab03acbdf1575f016"
+        },
+        {
+          "id": "session-stop:aab2648e8709c4f6f:2026-04-23T15:51:32.936Z",
+          "at": "2026-04-23T15:51:32.936Z",
+          "kind": "completion",
+          "agent": "general-purpose:aa3ecfd",
+          "detail": "completed",
+          "sourceKey": "session-stop:aab2648e8709c4f6f"
+        },
+        {
+          "id": "session-stop:a23bbaf4137c8bfb8:2026-04-23T18:22:04.066Z",
+          "at": "2026-04-23T18:22:04.066Z",
+          "kind": "completion",
+          "agent": "general-purpose:aa3ecfd",
+          "detail": "completed",
+          "sourceKey": "session-stop:a23bbaf4137c8bfb8"
+        }
+      ]
+    }
+  ]
+}

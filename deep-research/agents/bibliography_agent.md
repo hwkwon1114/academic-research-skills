@@ -58,7 +58,14 @@ For **physics-heavy** or **representation-sensitive** topics, do not begin with 
 
 ## Retrieval Ladder & Evidence Status
 
-Apply this ladder explicitly for every literature search, especially on physics-based modeling topics:
+You no longer fetch paper bodies inline. Delegate to **`paper_fetch_agent`** (see `agents/paper_fetch_agent.md`) for every candidate paper, in two distinct passes:
+
+1. **Discovery pass** — use arXiv API + Semantic Scholar + WebSearch (as documented in *Live Search Protocol* below) to *find* candidate papers. This pass returns identifiers (arxiv IDs, DOIs, titles), not bodies.
+2. **Fetch pass** — for each candidate identifier you decide to include, call `paper_fetch_agent` to retrieve the actual body. Read the returned `retrieval_quality` field; it dictates how much you can claim about each paper (see *Annotating from Paper Fetch Output* below).
+
+Why split discovery from fetch: discovery is cheap and broad (fan out across many candidates), fetch is expensive and narrow (only spend the bandwidth on papers you'll actually annotate). The split also means the synthesis and verification agents see exactly the same body text you saw — no reinterpretation, no drift.
+
+Use this conceptual ladder when **deciding which discovery routes to prioritize**:
 
 1. **arXiv / recent conference discovery** — use first for the newest papers, current terminology, and 2024-2026 method/application pairings.
 2. **Citation graph / Semantic Scholar lineage** — use next to find the papers that define the assumption lineage, the evaluation standard, and the strongest follow-up work.
@@ -100,9 +107,23 @@ Classify the topic before opening databases:
 
 If the topic is physics-heavy, your search log must show the physics process, cheapest usable data source, fidelity ladder, and representation keywords **before** the method-family expansion terms.
 
-### Live Search Protocol (use WebSearch and WebFetch tools)
+### Live Search Protocol — prefer the bundled scripts
 
-The agent's training knowledge is the floor, not the ceiling. **Always attempt live searches** using available tools before falling back to training knowledge. This is the only way to capture 2024-2026 literature that may postdate the knowledge cutoff.
+**Discovery** (find candidate papers): use `scripts/arxiv_search.py` rather than crafting arxiv API URLs by hand. The script handles URL encoding (which has subtle quoting rules — literal `"` must be `%22`, spaces inside quotes must be `+`), Atom XML parsing, rate-limit floors (3s), and the `--from <year>` filter for currency.
+
+```bash
+# AND-combine multiple terms; each term is treated as a quoted phrase
+python3 <skill-root>/scripts/arxiv_search.py --query "additive manufacturing" "machine learning" --max 15 --from 2024
+
+# Single term works the same
+python3 <skill-root>/scripts/arxiv_search.py --query "convergent cross mapping" --max 10 --from 2023
+```
+
+The script prints a JSON array of `{arxiv_id, title, authors, year, published, abstract, primary_category, abs_url, ar5iv_url}`. Use the `arxiv_id` field as the input to the next step.
+
+**Retrieval** (get the actual paper body): for every candidate paper you decide to include, call `scripts/paper_fetch.py` (delegated to `paper_fetch_agent`). This returns the body + `retrieval_quality` and is the single source of truth for what we can quote.
+
+**Use WebSearch and WebFetch only as last-resort discovery**, when arxiv_search returns no useful candidates and you need to find papers in venues outside arxiv (e.g., ASME Digital Collection, journal-only publications, conference proceedings without preprints). The training knowledge is still the floor — **always attempt live discovery first** to capture 2024-2026 literature that postdates the knowledge cutoff.
 
 #### Step 0: arXiv Live Search (required for any ML-for-engineering topic)
 
@@ -233,20 +254,21 @@ Only after the above passes should you expand with method-family queries such as
 
 ### Step 2: Forward and Backward Citation Search
 
-After identifying high-relevance papers:
-- **Backward (references)**: fetch the paper via ar5iv (`https://ar5iv.labs.arxiv.org/html/ARXIV_ID`) and read its reference section. ar5iv renders the full paper as HTML — the references section lists what the paper builds on and is directly readable.
-- **Forward (citations)**: use the Semantic Scholar API to find papers that cite it:
+After identifying high-relevance papers, use `scripts/s2_citations.py` for the citation graph — it handles both directions, rate-limiting, and 429 fallthrough in one call:
 
-```
-https://api.semanticscholar.org/graph/v1/paper/arXiv:ARXIV_ID/citations?fields=title,authors,year,externalIds&limit=20
-```
-
-For papers that only have a DOI (no arXiv ID), use:
-```
-https://api.semanticscholar.org/graph/v1/paper/DOI:10.xxxx/xxxxxx/citations?fields=title,authors,year,externalIds&limit=20
+```bash
+python3 scripts/s2_citations.py --arxiv-id 2010.08895 --limit 25
+python3 scripts/s2_citations.py --doi 10.1145/3580305.3599489 --limit 25
 ```
 
-This is essential for identifying model families: papers in a lineage cite each other. A cluster of mutual citations usually signals a model family.
+Returns `{paper, references[], citations[], fetch_log}` where each entry has `{arxiv_id, doi, title, authors, year, venue, citation_count}`. Set `S2_API_KEY` in the environment to raise the rate floor from 5 s to 1 s per call.
+
+- **Backward (references)**: the `references[]` list shows what the paper builds on — use to trace the assumption lineage.
+- **Forward (citations)**: the `citations[]` list shows who built on this paper — use to identify follow-up work and spot model families (a cluster of mutual citations usually signals a shared lineage).
+
+For ar5iv full-text reference reading (when you need section-level context, not just citation metadata), fetch `https://ar5iv.labs.arxiv.org/html/ARXIV_ID` directly — the reference section is directly readable HTML.
+
+This is essential for identifying model families: papers in a lineage cite each other.
 
 ### Step 3: Apply Inclusion/Exclusion
 
@@ -272,6 +294,43 @@ Example:
 ```
 
 The goal is one line per paper. If the finding or assumption is complex, allow a second line starting with `↳` for overflow. Do not expand to 7 separate labeled fields — that format bloats the bibliography without adding information the synthesis can't derive from the compact form.
+
+### Step 4b: Per-Paper Claim Extraction (when full text is available)
+
+The compact annotation in Step 4 is *for human reading*. The synthesis agent and any downstream wiki ingest also need a *structured* per-paper output: a list of claim tuples that can be cross-referenced, lint-checked, and propagated. Emit this **only when `paper_fetch_agent` returned `full-text`, `full-text-no-refs`, or `body-partial`** for the paper. For `abstract-only` / `metadata-only` / `unreachable`, emit `extracted_claims: []` and explain why in the annotation's `Limitation root` field.
+
+For each paper, produce an `extracted_claims[]` block:
+
+```yaml
+extracted_claims:
+  - id: c1                                    # unique within this paper, kebab-case or c<int>
+    quote: "We assume the response surface is Lipschitz-smooth in the design parameters."
+    section: "§3.1, p.4"                      # exactly as it appears in the body
+    target_concept: "GP smoothness assumption" # free-form noun phrase; the report compiler maps it to a wikilink
+    retrieval_quality: full-text              # propagated from paper_fetch_agent
+  - id: c2
+    quote: "Our model is calibrated on simulation data only; hardware validation is left as future work."
+    section: "§5, Limitations"
+    target_concept: "sim-to-real gap"
+    retrieval_quality: full-text
+```
+
+**Rules for what counts as a claim worth extracting:**
+
+- A **method commitment** ("we use a GP with RBF kernel") — extract.
+- An **assumption stated explicitly** ("we assume i.i.d. residuals") — extract; this is the most valuable kind for downstream conflict resolution.
+- A **headline result with a number** ("achieves 91.3% accuracy on the keyhole detection task") — extract.
+- A **declared limitation** ("we did not test on hardware") — extract; limitations carry the assumption that was violated.
+- A **comparison verdict** ("our method outperforms PINN by 12%") — extract; this is the input to ml_comparison_bias_agent.
+- **Background prose, related-work paragraphs, motivation** — do NOT extract; those are not claims this paper itself is responsible for.
+
+**Why verbatim quotes**: the wiki ingest workflow re-reads the cited section on conflict (the "mandatory re-read of the original source" step). A claim without a verbatim quote and section reference cannot be re-read; it becomes an orphan that the lint pass will flag. If you can't pull a verbatim quote, do not invent one — leave the claim out. Honest absence beats confident hallucination.
+
+**Quote length**: aim for 1–2 sentences. Long enough to be self-contained, short enough that a human can verify it against the source in a few seconds.
+
+**Target concept**: a free-form noun phrase that the report compiler (in vault profile) will map to a wikilink (e.g., `Gaussian Process method` → `[[gaussian-process]]`, `sim-to-real gap` → `[[sim-to-real-gap]]`). You don't need to know the wiki's slug naming — the report compiler handles slug resolution. Just describe the concept clearly enough that the mapping is obvious.
+
+**`retrieval_quality` propagation**: copy the field straight from `paper_fetch_agent`'s output. Downstream agents will use it to gate behavior — e.g., the wiki ingest workflow may treat `body-partial` claims more cautiously than `full-text` claims.
 
 ### Step 5: Organize into Model Families
 

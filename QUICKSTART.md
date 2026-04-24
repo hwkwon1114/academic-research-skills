@@ -1,17 +1,19 @@
 # Quick Start
 
-Get from zero to your first AI-assisted research in 3 steps.
+Get from zero to your first lit-review in 3 steps.
 
 ## Step 1: Install
 
 ```bash
-# Install Claude Code
-curl -fsSL https://claude.ai/install.sh | bash
+git clone https://github.com/Imbad0202/academic-research-skills.git ~/academic-research-skills
+mkdir -p ~/.claude/skills
+ln -s ~/academic-research-skills/deep-research ~/.claude/skills/deep-research
+```
 
-# Clone this repo into your project
-cd /path/to/your/project
-mkdir -p .claude/skills
-git clone https://github.com/Imbad0202/academic-research-skills.git .claude/skills/academic-research-skills
+Optional — install pandoc for PDF output:
+```bash
+brew install pandoc   # macOS
+# apt install pandoc  # Linux
 ```
 
 ## Step 2: Launch
@@ -20,55 +22,47 @@ git clone https://github.com/Imbad0202/academic-research-skills.git .claude/skil
 claude
 ```
 
-## Step 3: Start researching
+## Step 3: Start
 
-Tell Claude what you want to do. It will automatically pick the right skill and mode.
-
-### Example: Guided research (Socratic mode)
+### Option A — Socratic mode (if your frame is unclear)
 
 ```
-You: "I have a vague idea about AI's impact on higher education quality assurance,
-      but I'm not sure how to frame the research question. Can you guide me?"
+You: "Guide my research: I want to apply ML to aerospace structural optimization
+      but I'm not sure which method family fits my data regime."
 ```
 
-Claude will enter Socratic mode — asking questions to help you clarify your thinking, not giving you answers directly. After 5-15 rounds of dialogue, you'll have a focused research question and methodology direction.
+Socratic asks ≥3 narrowing questions (engineering domain → method family → open problem), then emits a **Research Frame** block and this prompt:
 
-### Example: Write a paper
+> "Your Research Frame is ready. Next step: run lit-review with this Frame — paste this block into a new prompt or type 'run lit-review'."
 
-```
-You: "Help me write a paper about the impact of declining birth rates
-      on private universities in Taiwan"
-```
-
-### Example: Review an existing paper
+Then:
 
 ```
-You: "Review this paper" (then paste or attach the paper)
+You: "run lit-review"
 ```
 
-### Example: Full pipeline (research → write → review → revise → publish)
+### Option B — Lit-review mode (if you already have a Research Frame)
 
 ```
-You: "I want to produce a complete research paper about how agentic AI
-      is reshaping student learning outcome measurement"
+You: "Run lit-review. Here is my Research Frame:
+- engineering_domain: topology optimization for aerospace structures
+- method_family_of_interest: Bayesian optimization
+- open_problem: discrete design variables break GP surrogate assumptions
+- ..."
 ```
 
-This triggers the full 10-stage pipeline. Budget ~$4-6 in API costs and 2-4 hours of collaborative work.
+## What you get
 
-## Which mode should I use?
+- Per-paper summary blocks (assumptions / outputs / gaps / cross-field transfer potential)
+- Research Agenda: exactly 3 ranked directions, each framed as:
+  `Apply/improve [Method X] from [Field Y] to solve [Problem Z] in [Engineering Domain]`
+- Markdown report + PDF saved to `reports/`
+
+## Mode reference
 
 | I want to... | Use this |
 |-------------|----------|
-| Explore a vague idea | `deep-research` socratic mode — just describe your interest |
-| Get a quick literature summary | `deep-research` quick mode |
-| Do a systematic review (PRISMA) | `deep-research` systematic-review mode |
-| Write a paper from scratch | `academic-paper` full mode |
-| Plan a paper chapter by chapter | `academic-paper` plan mode |
-| Get my paper reviewed | `academic-paper-reviewer` full mode |
-| Do everything end-to-end | `academic-pipeline` — say "I want a complete research paper" |
+| Clarify my research frame | `socratic` mode — describe your engineering problem |
+| Run a literature review | `lit-review` mode — provide or paste a Research Frame |
 
-## What's next?
-
-- [Full README](README.md) — all features, modes, installation options, and changelog
-- [中文版](README.zh-TW.md) — Traditional Chinese version
-- [Pipeline showcase](examples/showcase/) — real artifacts from a complete pipeline run
+Socratic does **not** auto-invoke lit-review. You control when to run it.

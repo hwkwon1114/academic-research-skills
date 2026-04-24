@@ -2,29 +2,10 @@
 
 ## Overview
 
-`deep-research` still exposes the same user-facing modes, but mode selection now happens **after** a routing pre-check:
+`deep-research` has two modes:
 
-1. **Physics-heavy**
-2. **Representation-sensitive**
-3. **Method-first**
-4. **Generic / non-physics**
-
-The routing class determines the **intake order**, not the whole pipeline. The stable downstream backbone remains **model-family / assumption-lineage synthesis**.
-
----
-
-## Routing Pre-Check
-
-Classify the prompt before choosing a mode.
-
-| Prompt class | Trigger signals | First intake focus | Must avoid |
-|---|---|---|---|
-| **Physics-heavy** | PDEs, operator learning, CFD/FEM solvers, expensive simulations or experiments, multi-fidelity, sim-to-real | Physics system -> data source/acquisition path -> fidelity ladder -> representation -> evaluation/sim-to-real constraints | Jumping straight to architecture ranking |
-| **Representation-sensitive** | Meshes, fields, graphs, topology change, operators, latent spaces, encoding bottlenecks | What must be represented, which encodings are plausible, whether representation is the bottleneck | Treating representation as a late-stage detail |
-| **Method-first** | “compare X vs Y”, benchmark request, architecture ranking | Immediate method-family comparison, with only lightweight context if helpful | Forcing solver/fidelity intake before any comparison |
-| **Generic / non-physics** | Broad research question without physics/data/representation signals | Standard broad research intake | Injecting irrelevant physics-specific questions |
-
-**Override rule:** explicit method-comparison requests override physics-heavy defaults unless the user asks for broader scoping.
+1. **`socratic`** — intake mode. Narrows the research frame through guided dialogue. Produces a Research Frame artifact and a user-confirmation handoff prompt. **No auto-chain to lit-review.**
+2. **`lit-review`** — output mode. Runs the full literature pipeline and produces an engineering-framed report with per-paper summary blocks and a 3-direction Research Agenda.
 
 ---
 
@@ -33,164 +14,93 @@ Classify the prompt before choosing a mode.
 ```text
 User Input
  |
- +-- Have text to review? ------------------------> review
- +-- Only need fact verification? ----------------> fact-check
- +-- Need guided thinking / no clear question? --> socratic
- +-- Explicit method comparison? -----------------> quick or lit-review
- +-- Need complete research output? -------------> full
- +-- Need literature-focused output only? -------> lit-review
- +-- Otherwise ----------------------------------> quick
+ +-- Already have a converged Research Frame? --> lit-review
+ +-- Unclear frame, want guided thinking?    --> socratic
+                                                  (emits Research Frame + user-confirmation prompt)
+                                                  (user must explicitly invoke lit-review)
 ```
 
-Use the routing pre-check to shape intake **inside** the selected mode:
-- `full` and `socratic` use the most routing-sensitive intake
-- `lit-review` uses routing to shape the bibliography and synthesis order
-- `quick` uses routing to decide whether to lead with physics/data/representation or direct method comparison
+**No auto-invoke from Socratic to lit-review.** Socratic always ends by printing:
+> "Your Research Frame is ready. Next step: run lit-review with this Frame — paste this block into a new prompt or type 'run lit-review'."
+
+**Socratic is a prerequisite for lit-review** unless the user already has a Research Frame (from a prior Socratic session or written by hand matching `references/research_frame_schema.md`).
 
 ---
 
 ## Mode Guide
 
-### `full`
+### `socratic`
 
 **Use when**
-- The user needs complete scoping, investigation, synthesis, and a final report
-- The topic is physics-heavy and needs careful acquisition/fidelity/representation framing
+- The user is unsure which engineering domain, method family, or open problem to focus on
+- The research frame is unclear or underspecified
+- The user wants guided thinking before committing to a literature search
 
 **Best fit examples**
-- “I need literature on PDE/operator learning for fast data-efficient physics-model surrogates.”
-- “Research multi-fidelity strategies for combustion-model surrogates.”
+- "Guide my research: I want to apply ML to structural optimization but I'm not sure which method fits."
+- "Help me think through whether representation or data cost is the real bottleneck."
+- "I want to use Bayesian optimization for aerodynamic design but I'm not sure what the open problem is."
 
-**Routing behavior**
-- Physics-heavy prompts: full front-end intake
-- Representation-sensitive prompts: representation-first intake
-- Method-first prompts: comparison first, then scoped expansion if needed
+**What it produces**
+- A converged Research Frame (10 fields: engineering domain, method family, open problem, baseline approach, data regime, scope notes, failure modes, scope boundaries, origin layer, validation status)
+- A user-confirmation handoff prompt
 
----
-
-### `quick`
-
-**Use when**
-- The user needs a fast brief or first-pass orientation
-- The user explicitly asks for a concise comparison or overview
-
-**Best fit examples**
-- “Quick brief on graph vs field representations for surrogate modeling.”
-- “Compare PINNs and FNOs for PDE surrogates.”
-
-**Routing behavior**
-- Method-first prompts often belong here
-- Physics-heavy prompts can still use quick mode, but the brief should mention data source, fidelity, and representation before ranking methods
+**What it does NOT produce**
+- A literature report
+- A paper outline
+- Auto-invocation of lit-review
 
 ---
 
 ### `lit-review`
 
 **Use when**
-- The user needs literature search + synthesis, but not a full report
-- The main deliverable is an annotated bibliography plus structured synthesis
+- The user has a converged Research Frame (from Socratic or written directly)
+- The main deliverable is a literature synthesis + Research Agenda
 
 **Best fit examples**
-- “Literature review on multi-fidelity operator learning.”
-- “Review the literature on topology-aware representations for structural surrogates.”
+- "Run lit-review. Here is my Research Frame: [block]"
+- "Literature review on applying Bayesian optimization to discrete topology optimization."
+- "Review the literature on cross-field transfer of physics-informed neural networks to structural health monitoring."
 
-**Routing behavior**
-- Physics-heavy: bibliography queries start with physics process, data modality, fidelity, and representation
-- Method-first: preserve direct family comparison in the synthesis
+**What it produces**
+1. Per-paper summary blocks (Assumptions / Outputs / Gaps / Cross-Field Transfer Potential) for every key paper
+2. Assumption Map, Sim-to-Real Summary, Representation Audit, Gap Analysis (annotated with `failure_modes[]` from the Research Frame)
+3. Research Agenda — exactly 3 ranked cross-field application directions (`highest tractable` / `medium` / `stretch-exploratory`), each matching: `Apply/improve [Method X] from [Field Y] to solve [Problem Z] in [Engineering Domain]`
+4. Markdown report + PDF (if pandoc available), saved to `reports/<slug>-<date>.md` and `.pdf`
 
----
-
-### `fact-check`
-
-**Use when**
-- The user wants specific claims, citations, or references checked
-
-**Best fit examples**
-- “Verify whether this PDE surrogate paper has a peer-reviewed version.”
-- “Fact-check this claim about hardware validation in operator learning.”
-
-**Routing behavior**
-- Do not escalate into full physics-first intake unless the user expands scope
-
----
-
-### `review`
-
-**Use when**
-- The user already has a draft, report, or manuscript and wants critique
-
-**Best fit examples**
-- “Review this surrogate-modeling survey.”
-- “Check whether this draft overclaims from simulation-only evidence.”
-
-**Routing behavior**
-- Apply the routing class to critique emphasis:
-  - physics-heavy -> overclaiming from solver-only evidence
-  - representation-sensitive -> whether encoding risks are ignored
-  - method-first -> whether comparisons are fair and scoped
-
----
-
-### `socratic`
-
-**Use when**
-- The user is unsure how to frame the research problem
-- The main need is guided thinking, not immediate report generation
-
-**Best fit examples**
-- “Help me think through whether representation or data cost is the real bottleneck.”
-- “Guide my research on physics-based surrogates.”
-
-**Routing behavior**
-- Physics-heavy: ask physics/data/fidelity/representation first
-- Representation-sensitive: stay on encoding sufficiency before method choice
-- Method-first: comparison can be discussed, but only if the user wants exploration rather than direct output
+**Routing behavior within lit-review**
+- Physics-heavy frame: bibliography queries start with physics process, data modality, fidelity, representation
+- Method-first frame: preserve direct family comparison in the synthesis
+- Cross-field frame: organize bibliography by source field (not by engineering domain)
 
 ---
 
 ## Regression Protection Cases
 
-### Case 1 — Physics-heavy
-**Prompt:** “I need literature on PDE/operator learning for fast data-efficient physics-model surrogates.”
-**Expected:** asks about solver cost, fidelity ladder, representation, and validation scope before model ranking.
+### Case 1 — Socratic (unclear frame)
+**Prompt:** "Guide my research: I want to apply ML for design optimization but I'm not sure where to start."
+**Expected:** Socratic fires Layer 1 (engineering domain narrowing), Layer 2 (method family + source field), Layer 3 (open problem). Emits Research Frame. Prints handoff prompt. No auto-invoke of lit-review.
 
-### Case 2 — Representation-sensitive
-**Prompt:** “Help me study which representation works best for topology-changing physics surrogates.”
-**Expected:** asks what must be represented and whether representation is the bottleneck before method ranking.
+### Case 2 — Lit-review (frame already provided)
+**Prompt:** "Run lit-review. Frame: topology optimization / Bayesian optimization / discrete variable handling."
+**Expected:** lit-review pipeline fires directly. Produces per-paper blocks + Research Agenda. No Socratic intake.
 
-### Case 3 — Method-first
-**Prompt:** “Compare DeepONet, FNO, and PINNs for PDE surrogate learning.”
-**Expected:** direct method-family comparison path is preserved immediately.
-
-### Case 4 — Generic / non-physics
-**Prompt:** broad non-physics literature request.
-**Expected:** no unnecessary solver/fidelity intake.
+### Case 3 — Socratic → Lit-review transition
+**Prompt (turn 1):** "Guide my research on applying reinforcement learning to thermal management."
+**Expected (turn 1):** Socratic fires. Narrows frame across Layers 1-3.
+**Expected (convergence):** Research Frame emitted. User-confirmation handoff prompt printed.
+**Prompt (turn 2):** "run lit-review"
+**Expected (turn 2):** lit-review fires using the Research Frame from the prior Socratic session.
 
 ---
 
 ## Transition Notes
 
-Common safe transitions:
+Only one valid transition exists:
 
 ```text
-socratic -> full
-socratic -> lit-review
-quick -> full
-quick -> lit-review
-lit-review -> full
-fact-check -> full
+socratic → lit-review  (user-initiated, not auto-chained)
 ```
 
-Routing class should be preserved across transitions unless the user changes the task.
-
-Example:
-- A `quick` method-first comparison can transition into `full`, but once the user broadens scope, the intake may expand into physics/data/fidelity/representation framing.
-
----
-
-## Handoff Reminder
-
-Mode selection decides **how the work starts**. It does **not** replace the backend:
-- bibliography still hands off into model families
-- synthesis still preserves assumption lineage
-- source verification still grades evidence quality separately from novelty/currentness
+The user must explicitly invoke lit-review after reviewing and accepting the Research Frame. This makes the transition auditable and prevents the literature search from running on an underspecified frame.

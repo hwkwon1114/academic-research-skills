@@ -78,9 +78,23 @@ Papers with no code, no dataset description, and single-run results should be Le
 A hybrid strategy to catch hallucinated or misattributed references:
 
 #### Tier 1: DOI/URL Verification (100% coverage)
-- Every source with a DOI -- verify via `https://doi.org/{doi}` resolution
-- Every arXiv paper -- verify via `https://arxiv.org/abs/{id}` or `https://ar5iv.labs.arxiv.org/html/{id}` (ar5iv renders full HTML, faster to verify title/author/date)
-- Check: resolves to a real page, title matches, authors match
+
+Use `scripts/ref_verify.py` for deterministic bulk verification — it is faster and more consistent than ad-hoc WebFetch per reference:
+
+```bash
+# Single reference
+python3 scripts/ref_verify.py --doi 10.1145/3580305.3599489
+python3 scripts/ref_verify.py --arxiv-id 2403.12345
+
+# Batch (JSON list of {"doi":...} or {"arxiv_id":...} objects)
+echo '[{"doi":"10.1145/..."},{"arxiv_id":"2403.12345"}]' | python3 scripts/ref_verify.py -
+```
+
+The script verifies DOIs via Crossref (200 = exists, 404 = fabricated) and arXiv IDs via the Atom API. It returns `{exists, canonical:{title,authors,year,venue}, source, notes}` per ref — compare `canonical.title` against the paper's claimed title to catch misattributions.
+
+- Every source with a DOI -- verify via `scripts/ref_verify.py --doi`
+- Every arXiv paper -- verify via `scripts/ref_verify.py --arxiv-id`
+- Check: `exists: true`, title matches (allow minor formatting differences), authors consistent
 
 #### Tier 2: WebSearch Spot-Check (50% coverage)
 - Search: `"{exact title}" {first author last name} {year}`

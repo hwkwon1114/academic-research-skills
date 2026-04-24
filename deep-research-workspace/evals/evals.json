@@ -1,50 +1,34 @@
 {
   "skill_name": "deep-research",
+  "version_under_test": "3.2-vault-and-fulltext",
+  "baseline": "skill-snapshot-iter4 (v3.0-ml-engineering, pre-vault and pre-scripts)",
   "evals": [
     {
       "id": 0,
-      "eval_name": "thermal-monitoring",
-      "prompt": "Literature review on in-situ monitoring and evaluation methods for thermal and mechanical history in metal additive manufacturing. What sensor modalities and data types do researchers use to characterize the process, and how is this data used to detect defects or predict part quality?",
-      "expected_output": "Organized literature review grouping papers by ML method family (thermal imaging CNNs, time-series/sequential models, physics-based/surrogate models), with assumption annotations per paper, sim-to-real status documented for each paper, and plain markdown output with numbered references.",
+      "eval_name": "thermal-monitoring-regression",
+      "purpose": "Confirm v3.2 doesn't break the existing standard-report flow, AND that the new `deep-research-agents-used:` envelope marker fires.",
+      "prompt": "Literature review on in-situ monitoring and evaluation methods for thermal and mechanical history in metal additive manufacturing. What sensor modalities and data types do researchers use to characterize the process, and how is this data used to detect defects or predict part quality? Use the deep-research skill in its standard `full` mode (don't request the new vault output).",
+      "expected_output": "Standard markdown report with numbered references AND a `deep-research-agents-used: [...]` line in the prologue. The agents-used list must include `paper_fetch_agent` and `bibliography_agent`.",
       "files": [],
-      "assertions": [
-        {"id": "a0", "text": "Output organizes literature by ML method family (e.g., CNN-based thermal imaging, LSTM/time-series, GP/surrogate), not just by sensor type or processing stage"},
-        {"id": "a1", "text": "Each method family includes a stated key assumption that the method makes about the data"},
-        {"id": "a2", "text": "Each paper or group of papers is labeled with sim-to-real status (simulation-only, hardware-validated, or both)"},
-        {"id": "a3", "text": "References use numbered format [1], [2] inline with a numbered list at the end — not APA author-year format"},
-        {"id": "a4", "text": "At least 2 distinct ML method families are identified and separated in the output"},
-        {"id": "a5", "text": "Paper limitations are connected to a specific assumption violation, not just listed as standalone statements"}
-      ]
+      "assertions": []
     },
     {
-      "id": 1,
-      "eval_name": "ml-process-control",
-      "prompt": "What ML methods are used to control and optimize metal additive manufacturing by monitoring in-situ thermal and mechanical measurements? I need to understand what handles the sequential/temporal nature of thermal history data, and what the current gaps are between simulation-based and hardware-validated approaches.",
-      "expected_output": "Method selection justified from data regime, assumption annotation for each method family, explicit sim-to-real gap taxonomy, engineering baseline identified, numbered references.",
+      "id": 3,
+      "eval_name": "synthesize-ccm-vault",
+      "purpose": "Exercise the new `synthesize` mode and confirm vault-shaped output (frontmatter + wikilinks + extracted_claims).",
+      "prompt": "Use the deep-research skill in `synthesize` mode. Topic: CCM (Convergent Cross Mapping) for detecting causality in noisy short-time-series — what's the consensus on its sensitivity to library length and embedding dimension, and where do recent papers (2023-2025) disagree? Output a single Synthesized Paper markdown page suitable for ingest into a personal Obsidian-flavored research wiki.",
+      "expected_output": "Single markdown file with YAML frontmatter (`type: synthesized-paper`, `topic`, `generated_by`, `deep-research-agents-used: [...]`, `sources: [[wikilinks]]`, `extracted_claims: [...]` with bidirectional shape `{id, quote, section, targets}`, `retrieval_quality_summary`), followed by Synthesis / Method-Family Map / Assumption Map / Sim-to-Real Summary / Gap Analysis / Sources sections. References as `[[paper-slug]]`, never `[1]/[2]`.",
       "files": [],
-      "assertions": [
-        {"id": "b0", "text": "Output explicitly characterizes the data regime for AM (continuous temporal stream from in-situ sensors, limited labeled examples, expensive evaluations per print)"},
-        {"id": "b1", "text": "Output flags that the sequential/temporal nature of thermal history data violates the i.i.d. assumption of standard feedforward models, and names which method families handle this"},
-        {"id": "b2", "text": "Sim-to-real gap is named with at least one specific physics the simulation omits (e.g., melt pool dynamics, microstructure evolution, residual stress)"},
-        {"id": "b3", "text": "An engineering baseline is identified — what a process engineer would use without ML (e.g., PID control, design of experiments, empirical process maps)"},
-        {"id": "b4", "text": "References use numbered format [1], [2] inline with a numbered list at the end"},
-        {"id": "b5", "text": "Method selection for at least one family is explicitly justified from problem characteristics (data regime, uncertainty need, or physics structure) — not just described"}
-      ]
+      "assertions": []
     },
     {
-      "id": 2,
-      "eval_name": "socratic-am",
-      "prompt": "Guide my research: I want to use machine learning to improve print quality in metal additive manufacturing by monitoring thermal history from pyrometers and thermal cameras during printing. I'm not sure what ML approach makes sense or how to set up the optimization loop.",
-      "expected_output": "Socratic dialogue with engineering-specific layers: Layer 1 asks about data regime/cost, Layer 2 connects method to budget, Layer 3 asks about validation scope. No humanities framing. Ends with Research Plan Summary.",
+      "id": 4,
+      "eval_name": "paper-review-causality",
+      "purpose": "Exercise the new `paper-review` mode and confirm vault-shaped Paper page with verbatim-quote-grounded extracted_claims.",
+      "prompt": "Use the deep-research skill in `paper-review` mode. Pick any recent (2023-2025) arxiv paper about causality detection methods (CCM, Granger causality, transfer entropy, or convergent cross-mapping variants) and produce a vault-shaped Paper page or `## Review` section. The paper must be one you actually fetch (not training-knowledge) and the extracted_claims[] must use verbatim quotes from the body with section refs.",
+      "expected_output": "Single markdown file with YAML frontmatter (`type: paper`, `authors`, `year`, `venue`, `url_or_path`, `review_status`, `generated_by`, `deep-research-agents-used: [...]`, `extracted_claims: [...]` with verbatim quotes, `retrieval_quality: full-text` or honest fallback), followed by `## Review` body and `## Connections suggested` section.",
       "files": [],
-      "assertions": [
-        {"id": "c0", "text": "The first substantive question in the dialogue asks about data regime or evaluation cost (e.g., how many prints can you afford, what sensors do you have) — NOT about why the question matters or its societal importance"},
-        {"id": "c1", "text": "Layer 2 connects the print budget (~20-30) to a specific method recommendation with an explicit assumption stated (e.g., GP/BO because <50 evaluations and need calibrated uncertainty)"},
-        {"id": "c2", "text": "The dialogue includes at least one question about simulation vs. hardware validation scope"},
-        {"id": "c3", "text": "The dialogue includes a question about what the researcher would do without ML (engineering baseline)"},
-        {"id": "c4", "text": "No humanities-style framing appears: no questions like 'why does this question matter', 'how would the world be different', or 'who would make different decisions'"},
-        {"id": "c5", "text": "Output ends with a Research Plan Summary that includes: design task, data regime, method selection with justification, and validation scope"}
-      ]
+      "assertions": []
     }
   ]
 }

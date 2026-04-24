@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1776001916505,
+  "lastScanned": 1776968524649,
   "projectRoot": "/Users/hyunwoo/Documents/academic-research-skills",
   "techStack": {
     "languages": [],
@@ -38,7 +38,7 @@
       "path": "academic-paper",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776001916484,
+      "lastAccessed": 1776968524639,
       "keyFiles": [
         "SKILL.md"
       ]
@@ -47,7 +47,7 @@
       "path": "academic-paper-reviewer",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776001916484,
+      "lastAccessed": 1776968524639,
       "keyFiles": [
         "SKILL.md"
       ]
@@ -56,7 +56,7 @@
       "path": "academic-pipeline",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776001916487,
+      "lastAccessed": 1776968524639,
       "keyFiles": [
         "SKILL.md"
       ]
@@ -65,7 +65,7 @@
       "path": "deep-research",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1776001916487,
+      "lastAccessed": 1776968524639,
       "keyFiles": [
         "SKILL.md"
       ]
@@ -74,21 +74,21 @@
       "path": "deep-research-workspace",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1776001916490,
+      "lastAccessed": 1776968524639,
       "keyFiles": []
     },
     "examples": {
       "path": "examples",
       "purpose": "Example code",
       "fileCount": 1,
-      "lastAccessed": 1776001916491,
+      "lastAccessed": 1776968524639,
       "keyFiles": []
     },
     "shared": {
       "path": "shared",
       "purpose": null,
       "fileCount": 3,
-      "lastAccessed": 1776001916491,
+      "lastAccessed": 1776968524639,
       "keyFiles": [
         "cross_model_verification.md",
         "handoff_schemas.md",
@@ -99,7 +99,7 @@
       "path": "academic-paper/examples",
       "purpose": "Example code",
       "fileCount": 6,
-      "lastAccessed": 1776001916491,
+      "lastAccessed": 1776968524639,
       "keyFiles": [
         "chinese_paper_example.md",
         "imrad_hei_example.md",
@@ -110,7 +110,7 @@
       "path": "academic-paper-reviewer/examples",
       "purpose": "Example code",
       "fileCount": 2,
-      "lastAccessed": 1776001916492,
+      "lastAccessed": 1776968524640,
       "keyFiles": [
         "hei_paper_review_example.md",
         "interdisciplinary_review_example.md"
@@ -120,7 +120,7 @@
       "path": "academic-pipeline/examples",
       "purpose": "Example code",
       "fileCount": 3,
-      "lastAccessed": 1776001916492,
+      "lastAccessed": 1776968524640,
       "keyFiles": [
         "full_pipeline_example.md",
         "integrity_failure_recovery.md",
@@ -131,19 +131,186 @@
       "path": "deep-research/examples",
       "purpose": "Example code",
       "fileCount": 3,
-      "lastAccessed": 1776001916493,
+      "lastAccessed": 1776968524640,
       "keyFiles": [
         "fact_check_mode.md",
         "handoff_to_paper.md",
         "socratic_guided_research.md"
       ]
+    },
+    "deep-research/scripts": {
+      "path": "deep-research/scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 7,
+      "lastAccessed": 1776968524640,
+      "keyFiles": [
+        "arxiv_search.py",
+        "bias_signals.py",
+        "paper_fetch.py"
+      ]
     }
   },
   "hotPaths": [
     {
+      "path": "deep-research/agents/report_compiler_agent.md",
+      "accessCount": 12,
+      "lastAccessed": 1777050123397,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/agents/socratic_mentor_agent.md",
+      "accessCount": 9,
+      "lastAccessed": 1777050123224,
+      "type": "file"
+    },
+    {
       "path": "deep-research/SKILL.md",
+      "accessCount": 8,
+      "lastAccessed": 1777050121984,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/scripts/lit_review_validate.py",
+      "accessCount": 7,
+      "lastAccessed": 1777050180621,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/scripts/vault_lint.py",
+      "accessCount": 3,
+      "lastAccessed": 1776968951306,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 3,
+      "lastAccessed": 1777050122274,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/agents/source_verification_agent.md",
+      "accessCount": 2,
+      "lastAccessed": 1776968567837,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/agents/ml_comparison_bias_agent.md",
+      "accessCount": 2,
+      "lastAccessed": 1776968574702,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/agents/bibliography_agent.md",
+      "accessCount": 2,
+      "lastAccessed": 1776968593119,
+      "type": "file"
+    },
+    {
+      "path": "shared/handoff_schemas.md",
+      "accessCount": 2,
+      "lastAccessed": 1777047557628,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/references/mode_selection_guide.md",
+      "accessCount": 2,
+      "lastAccessed": 1777047978084,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/examples/socratic_guided_research.md",
+      "accessCount": 2,
+      "lastAccessed": 1777048125436,
+      "type": "file"
+    },
+    {
+      "path": "QUICKSTART.md",
+      "accessCount": 2,
+      "lastAccessed": 1777048427244,
+      "type": "file"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "accessCount": 2,
+      "lastAccessed": 1777048447368,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/agents/devils_advocate_agent.md",
+      "accessCount": 2,
+      "lastAccessed": 1777048530226,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/references/failure_paths.md",
+      "accessCount": 2,
+      "lastAccessed": 1777048645896,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/scripts/md_to_pdf.py",
+      "accessCount": 2,
+      "lastAccessed": 1777050121932,
+      "type": "file"
+    },
+    {
+      "path": "academic-paper/SKILL.md",
       "accessCount": 1,
-      "lastAccessed": 1776001987279,
+      "lastAccessed": 1777042828836,
+      "type": "file"
+    },
+    {
+      "path": "academic-pipeline/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1777042829100,
+      "type": "file"
+    },
+    {
+      "path": "academic-paper-reviewer/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1777042829466,
+      "type": "file"
+    },
+    {
+      "path": "shared/cross_model_verification.md",
+      "accessCount": 1,
+      "lastAccessed": 1777047557813,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/references/handoff_schemas.md",
+      "accessCount": 1,
+      "lastAccessed": 1777047602026,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/references/research_frame_schema.md",
+      "accessCount": 1,
+      "lastAccessed": 1777047613918,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/references/cross_model_verification.md",
+      "accessCount": 1,
+      "lastAccessed": 1777047635553,
+      "type": "file"
+    },
+    {
+      "path": "deep-research/examples/lit_review_with_agenda.md",
+      "accessCount": 1,
+      "lastAccessed": 1777048070787,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 1,
+      "lastAccessed": 1777048465283,
+      "type": "file"
+    },
+    {
+      "path": ".claude/CLAUDE.md",
+      "accessCount": 1,
+      "lastAccessed": 1777048484269,
       "type": "file"
     }
   ],

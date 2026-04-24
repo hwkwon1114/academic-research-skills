@@ -1,4 +1,0 @@
-interface:
-  display_name: "Academic Pipeline"
-  short_description: "Run the end-to-end paper workflow"
-  default_prompt: "Use $academic-pipeline to run the research-to-paper workflow with stage checkpoints."

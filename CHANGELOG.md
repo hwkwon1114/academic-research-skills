@@ -2,62 +2,62 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.9.1] - 2026-04-03
+## [4.0] - 2026-04-24 — Engineering Lit-Review + Cross-Field Agenda
+
+### Removed
+- `academic-paper` skill (v2.5) — deleted entirely
+- `academic-paper-reviewer` skill (v1.4) — deleted entirely
+- `academic-pipeline` skill (v2.7) — deleted entirely
+- `examples/showcase/` — deleted (contained only academic pipeline artifacts)
+- `shared/` directory — collapsed into `deep-research/references/`
+
+### Changed
+- `deep-research` is now the only skill in this repo
+- Collapsed `deep-research` to 2 modes: `socratic` (intake → Research Frame) and `lit-review` (full pipeline)
+- Removed modes: `full`, `quick`, `review`, `fact-check`, `synthesize`, `paper-review`
+- `socratic` mode now produces a Research Frame (10-field schema) instead of a Research Plan Summary
+- No auto-invoke from Socratic to lit-review — explicit user confirmation required
 
 ### Added
-- `status` and `related_skills` metadata to all 4 SKILL.md frontmatters
-  - Enables skill discovery tools and cross-skill navigation for users with multiple skills installed
-  - `deep-research` ↔ `academic-paper` ↔ `academic-paper-reviewer` ↔ `academic-pipeline`
+- Per-paper summary blocks in lit-review output: Assumptions / Outputs / Gaps / Cross-Field Transfer Potential
+- Research Agenda section: exactly 3 ranked cross-field application directions with qualitative labels (`highest tractable` / `medium` / `stretch-exploratory`)
+- Apply/improve template: `Apply/improve [Method X] from [Field Y] to solve [Problem Z] in [Engineering Domain]`
+- `scripts/md_to_pdf.py` — pandoc-based PDF conversion with loud fallback warning
+- `scripts/lit_review_validate.py` — automatic post-emission validator (6 checks; blocks agent completion on failure)
+- `deep-research/references/research_frame_schema.md` — standalone Research Frame schema (10 fields)
+- `deep-research/references/handoff_schemas.md` — internal data contracts (moved + rewritten from `shared/`)
+- `deep-research/references/cross_model_verification.md` — optional cross-model verification (moved from `shared/`)
+- `deep-research/examples/lit_review_with_agenda.md` — canonical smoke-test fixture for the validator
+- Git rollback tag `pre-redesign-v3.2` created before deletion
+
+### Engineering framing
+- All output language centers on "apply/improve methods from other fields" — not algorithm invention
+- Gap Analysis annotates `failure_modes[]` from Research Frame against retrieved papers
+- Direction 3 (stretch-exploratory) respects `scope_boundaries[]` from Research Frame
+- References use numbered format `[1] Author, Year. Title. Venue.` (not APA narrative)
+
+---
+
+## [3.2] - 2026-04-22
+
+Full-text retrieval & vault-shaped output. Added `paper_fetch_agent`. Report compiler adds `synthesize` and `paper-review` vault modes. `deep-research-agents-used:` envelope marker. Bundled scripts.
+
+## [3.1] - 2026-04-05
+
+Collapsed to 4 phases. Added `ml_comparison_bias_agent`. Research Scope Protocol replaces FINER/PICOS. Plain markdown with numbered references.
+
+## [2.9.1] - 2026-04-03
+
+`status` and `related_skills` metadata added to all 4 SKILL.md frontmatters.
 
 ## [2.9] - 2026-03-27
 
-### Added
-- **Style Calibration** — learn the author's writing voice from past papers (optional, intake Step 10)
-- **Writing Quality Check** — checklist catching overused AI-typical patterns (renamed from AI Writing Lint)
-- Information Systems Basket of 8 journals added to academic-paper reference list
-- Copilot philosophy tagline to README EN + zh-TW
-- Substack guide articles to both READMEs
-
-### Fixed
-- Skill Details section version numbers and agent descriptions updated
-- /simplify review — stale refs, lint sweep efficiency, schema fields
-- Removed last v4.0 reference in CHANGELOG
+Style Calibration + Writing Quality Check. Information Systems Basket of 8 journals.
 
 ## [2.8] - 2026-03-22
 
-### Added
-- **SCR Loop Phase 1** — State-Challenge-Reflect mechanism integrated into Socratic Mentor Agent
-  - Commitment gates at layer/chapter transitions (collect user predictions before presenting evidence)
-  - Certainty-triggered contradiction (probes high-confidence statements with counterpoints)
-  - Adaptive intensity (tracks commitment accuracy, adjusts challenge frequency)
-  - Self-calibration signal (S5) for convergence detection
-  - SCR Switch — users can disable/re-enable predictions mid-dialogue
-- `deep-research/agents/socratic_mentor_agent.md` — SCR Protocol section with commitment gates, divergence reveal, and adaptive intensity
-- `deep-research/references/socratic_questioning_framework.md` — SCR Overlay Protocol mapping SCR phases to Socratic functions
-- `academic-paper/agents/socratic_mentor_agent.md` — Chapter-level SCR Protocol with per-chapter commitment questions and cross-chapter pattern tracking
-
-## [2.7.3] - 2026-03-10
-
-### Fixed
-- Version badge corrected in both EN and zh-TW READMEs
-
-## [2.7.2] - 2026-03-10
-
-### Added
-- Version, license, and sponsor badges to README
-- zh-TW README badges
-
-## [2.7.1] - 2026-03-10
-
-### Fixed
-- Buy Me a Coffee username corrected
+SCR Loop Phase 1 — State-Challenge-Reflect mechanism in Socratic Mentor Agent.
 
 ## [2.7] - 2026-03-09
 
-### Added
-- Integrity Verification v2.0: Anti-Hallucination Overhaul
-- Full academic research skills suite (4 skills, 116 files)
-- Deep Research v2.3 — 13-agent research team with 7 modes
-- Academic Paper v2.4 — 12-agent paper writing with LaTeX hardening
-- Academic Paper Reviewer v1.4 — Multi-perspective peer review with quality rubrics
-- Academic Pipeline v2.6 — 10-stage orchestrator with integrity verification
+Full academic research skills suite (4 skills, 116 files). Integrity Verification v2.0.

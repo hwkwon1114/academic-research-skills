@@ -1,8 +1,8 @@
-# Failure Paths — Research Pipeline Failure Path Map
+# Failure Paths — deep-research Failure Path Map
 
 ## Overview
 
-This document lists all failure scenarios that may be encountered across all modes of the deep-research skill, along with their detection conditions, user notification messages, handling steps, and recovery paths. The purpose is to ensure every failure scenario has a clear handling strategy, preventing users from reaching a dead end.
+This document lists all failure scenarios for the `socratic` and `lit-review` modes of `deep-research`, along with detection conditions, user notifications, handling steps, and recovery paths.
 
 ---
 
@@ -10,151 +10,94 @@ This document lists all failure scenarios that may be encountered across all mod
 
 | # | Failure Scenario | Affected Modes | Severity | Handling Strategy |
 |---|---------|---------|---------|---------|
-| F1 | RQ cannot converge | full, socratic | Medium | Narrow scope provide candidate RQs |
-| F2 | Insufficient literature | full, quick, lit-review | High | Expand search strategy |
-| F3 | Methodology mismatch | full | High | Return to Phase 1 |
-| F4 | Devil's Advocate CRITICAL | full | Critical | STOP + correct |
-| F5 | Ethics BLOCKED | full, review | Critical | STOP + remediation path |
-| F6 | Socratic dialogue does not converge | socratic | Medium | Switch to full mode |
-| F7 | User abandons mid-process | all | Low | Save progress |
-| F8 | Only Chinese-language literature available | full, lit-review | Medium | Switch search strategy |
-| F9 | All source quality below threshold | full, fact-check | High | Downgrade or expand sources |
-| F10 | Conclusions inconsistent with evidence | full | High | Return to Phase 3 |
-| F11 | Revision loop exceeds limit | full | Medium | Force-complete + limitation list |
-| F12 | Interdisciplinary bridging failure | full | Low | Revert to single discipline |
+| F1 | Research Frame cannot converge | socratic | Medium | Narrow scope; provide candidate frames |
+| F2 | Insufficient literature | lit-review | High | Expand search strategy |
+| F4 | Devil's Advocate CRITICAL | lit-review | Critical | STOP + require correction |
+| F6 | Socratic dialogue does not converge | socratic | Medium | Re-run with narrower starting question |
+| F8 | Only Chinese-language literature available | lit-review | Medium | Switch search strategy |
+| F13 | Validator failure (post-emission) | lit-review | High | Report validator stderr; do not claim completion |
+| F14 | PDF toolchain absent | lit-review | Low | Save Markdown; print install-message warning |
 
 ---
 
 ## Detailed Failure Paths
 
-### F1: Research Question Cannot Converge
+### F1: Research Frame Cannot Converge
 
-**Affected Modes**: `full` (Phase 1), `socratic` (Layer 1)
+**Affected Modes**: `socratic` (Layers 1-3)
 **Severity**: Medium
 
 **Trigger Conditions**:
-- `full` mode: research_question_agent interaction exceeds 3 rounds, user still cannot determine the RQ
-- `socratic` mode: Layer 1 exceeds 5 rounds, user repeatedly revises without a clear direction
+- Layer 1 exceeds 5 rounds; user repeatedly revises the engineering domain without committing
+- Layer 2 exceeds 5 rounds; user cannot name a method family or source field
+- Layer 3 exceeds 5 rounds; open problem remains vague
 
 **User Notification Message**:
-> I notice we've been discussing for a while, but the research question hasn't converged to a clear direction yet. This is perfectly normal — sometimes the question itself is the hardest part. Let me offer a few possible directions to see which one is closest to your thinking.
+> I notice we've been exploring for a while, but the Research Frame hasn't converged yet. That's okay — let me offer a few possible framings based on what you've shared, and you can tell me which is closest.
 
 **Handling Steps**:
-1. Compile key topics discussed and user-expressed preferences
-2. Produce 3 candidate RQs, each with a brief explanation and rough FINER assessment
-3. Ask the user to select the closest one as a starting point
-4. If the user still cannot choose → suggest doing a `lit-review` mode to explore the literature first, then return
+1. Compile the dimensions that have converged (e.g., engineering domain is clear but method family is not)
+2. Produce 2-3 candidate framings for the unconverged dimensions
+3. Ask the user to select the closest one
+4. If user still cannot choose → suggest starting lit-review with a partial frame and narrowing during the investigation phase
 
 **Recovery Paths**:
-- Select a candidate RQ → continue the original workflow
-- Do lit-review → restart RQ clarification after the literature review is complete
-- User redescribes on their own → restart Phase 1 Layer 1
+- User selects a candidate framing → complete remaining layers → emit Research Frame
+- User provides a cleaner starting question → restart Socratic from Layer 1
+- User accepts a partial frame → emit with `validation_status: frame-partial`, note which fields are uncertain
 
 ---
 
 ### F2: Insufficient Literature
 
-**Affected Modes**: `full` (Phase 2), `quick`, `lit-review`
+**Affected Modes**: `lit-review` (Phase 2)
 **Severity**: High
 
 **Trigger Conditions**:
-- bibliography_agent finds < 5 usable sources after standard search strategy
+- `bibliography_agent` finds < 5 usable sources after standard search strategy
 - After excluding quality-unqualified sources, < 3 remain
 
 **User Notification Message**:
-> With the current search strategy, I found only limited relevant literature. This could mean: (1) this is a very new research area; (2) the search keywords need adjustment; (3) the research question scope may need refinement. Let me try expanding the search strategy.
+> With the current Research Frame, I found only limited relevant literature. This may mean: (1) the cross-field transfer you're looking for is genuinely novel; (2) the search keywords need adjustment; (3) the method family is too specific. Let me try expanding the search strategy.
 
 **Handling Steps**:
-1. Expand search keywords (synonyms, broader terms, related concepts)
-2. Expand database scope (add grey literature, policy reports, working papers)
-3. Relax time range (from past 5 years to past 10 years)
-4. Try keywords from adjacent disciplines
-5. If still insufficient → suggest the user consider adjusting the RQ or accept this as an exploratory study
+1. Expand search keywords (synonyms, broader method family, adjacent source fields)
+2. Expand database scope (add grey literature, preprints, workshop papers)
+3. Relax the source-field constraint (search for the method family across all fields, not just the named source field)
+4. If still insufficient → suggest updating the Research Frame to broaden the method family
 
 **Recovery Paths**:
 - Expanded search yields sufficient literature → continue original workflow
-- Accept as exploratory research → adjust report positioning, emphasize the study's pioneering nature
-- Adjust RQ → return to Phase 1
-
----
-
-### F3: Methodology Mismatch
-
-**Affected Modes**: `full` (Checkpoint 1)
-**Severity**: High
-
-**Trigger Conditions**:
-- devils_advocate_agent at Checkpoint 1 determines that the methodology proposed by research_architect_agent cannot answer the RQ produced by research_question_agent
-- There is a logical gap between the methodology and the RQ
-
-**User Notification Message**:
-> Devil's Advocate found an important issue in the methodology review: your research question asks "why," but your method design can only answer "whether." Let's go back and adjust — here are three possible directions...
-
-**Handling Steps**:
-1. Clearly state the gap between the RQ type (descriptive/comparative/causal/evaluative) and the method's capability
-2. Provide 3 alternative method suggestions, each with pros and cons
-3. Confirm whether the RQ needs adjustment to match a feasible method
-4. Re-execute research_architect_agent
-
-**Recovery Paths**:
-- Select an alternative method → regenerate Methodology Blueprint → Checkpoint 1 re-review
-- Adjust RQ → return to research_question_agent → redo Phase 1
-- Maximum 2 retries; if still mismatched on the 3rd attempt → suggest the user consult their advisor
+- User broadens Research Frame → re-run lit-review with updated frame
+- Accept as exploratory → adjust Research Agenda to flag low-evidence directions explicitly
 
 ---
 
 ### F4: Devil's Advocate CRITICAL
 
-**Affected Modes**: `full` (any Checkpoint)
+**Affected Modes**: `lit-review` (Checkpoints 1 and 2)
 **Severity**: Critical
 
 **Trigger Conditions**:
-- devils_advocate_agent finds a Critical severity issue at any Checkpoint
-- Includes: fatal logical flaws, core assumptions that cannot hold, evidence contradicting conclusions
+- `devils_advocate_agent` finds a Critical severity issue at any Checkpoint
+- Includes: fatal assumption violation, engineering baseline absent, comparison completeness failure
 
 **User Notification Message**:
 > STOP — Devil's Advocate found a critical issue that must be resolved before continuing:
 > [Specific issue description]
-> This is not an issue that can be ignored, as it fundamentally affects the research's validity.
+> This issue fundamentally affects the validity of the Research Agenda directions.
 
 **Handling Steps**:
-1. Fully present the Critical issue's description, impact, and suggested correction direction
-2. Pause the workflow; do not allow advancement to the next Phase
+1. Fully present the Critical issue's description, impact, and suggested correction
+2. Pause the workflow; do not advance to the next Phase
 3. Wait for user response or correction
 4. After user correction → re-execute the Checkpoint
-5. 2 consecutive CRITICALs → suggest the user fundamentally rethink the research direction
+5. Two consecutive CRITICALs → suggest updating the Research Frame
 
 **Recovery Paths**:
 - User corrects the issue → re-execute Checkpoint → continue after PASS
-- User chooses to modify the RQ/method → return to the corresponding Phase
-- User abandons the direction → enter F7 workflow
-
----
-
-### F5: Ethics BLOCKED
-
-**Affected Modes**: `full` (Phase 5), `review`
-**Severity**: Critical
-
-**Trigger Conditions**:
-- ethics_review_agent determines BLOCKED
-- Includes: research involving non-consensual use of personal data, potentially discriminatory impact, dual-use risk
-
-**User Notification Message**:
-> Ethics Review has determined that this research has ethical issues requiring prior resolution:
-> [Specific issue list]
-> The research report cannot be delivered until these issues are resolved. Here are the suggested remediation paths...
-
-**Handling Steps**:
-1. List all BLOCKED reasons, each with specific remediation suggestions
-2. Distinguish between remediable (e.g., add informed consent statement) and irremediable (e.g., research design inherently has ethical issues)
-3. Remediable issues → provide modification suggestions → re-review after user confirmation
-4. Irremediable issues → suggest fundamental redesign of the research
-
-**Recovery Paths**:
-- Fix ethical issues → re-execute ethics_review_agent → continue after CLEARED
-- Modify research design → return to Phase 1
-- Issues are irremediable → suggest abandoning this research direction, provide alternative direction suggestions
+- User updates Research Frame → restart lit-review Phase 1
+- User accepts the limitation → downgrade to MEDIUM and document in Gap Analysis
 
 ---
 
@@ -164,166 +107,94 @@ This document lists all failure scenarios that may be encountered across all mod
 **Severity**: Medium
 
 **Trigger Conditions**:
-- Dialogue exceeds 10 rounds, user still vacillating between different directions
-- Extracted INSIGHTs < 3
+- Dialogue exceeds 10 rounds; user still vacillating between different engineering domains or method families
+- Extracted INSIGHTs < 3 after 10 rounds
 
 **User Notification Message**:
-> We've explored several directions, each with its own value. However, I notice we've been going back and forth between a few directions — this may mean you have multifaceted interests in this topic, but it can also make the research hard to focus. Would you like to:
-> (A) Continue the Socratic dialogue, but focus on [the most promising direction] you just mentioned?
-> (B) Switch to full mode, and let my team help you systematically explore and converge?
-> (C) Take a pause, think it over, and come back later?
+> We've explored several directions, each with value. I notice we've been moving between framings — this sometimes means the starting question needs to be sharpened. Would you like to:
+> (A) Restart Socratic with a narrower starting question (e.g., fix the engineering domain first)
+> (B) Accept a partial Research Frame and proceed to lit-review with the dimensions that have converged
+> (C) Pause and return later
 
 **Handling Steps**:
-1. Compile currently extracted INSIGHTs
-2. Identify the 1-2 directions with the most convergence potential
-3. Provide 3 options (continue with focus switch mode pause)
-4. If user chooses to continue but still hasn't converged by round 15 → auto-compile + end
+1. Compile currently converged dimensions (which of the 3 core fields are settled)
+2. Identify the single most-contested dimension
+3. Offer the 3 options above
+4. If user continues but has not converged by round 15 → auto-compile best available frame and end
 
 **Recovery Paths**:
-- Continue with focus → restrict discussion scope, converge within 5 rounds
-- Switch to full mode → pass extracted INSIGHTs to research_question_agent
-- Pause → save INSIGHT list; user can re-enter at any time
+- Restart with narrower question → restrict to one contested dimension per layer
+- Accept partial frame → emit with `validation_status: frame-partial`; proceed to lit-review
+- Pause → user can re-invoke socratic at any time
 
 ---
 
-### F7: User Abandons Mid-Process
+### F8: Only Non-English Literature Available
 
-**Affected Modes**: All modes
-**Severity**: Low
-
-**Trigger Conditions**:
-- User explicitly states they don't want to continue ("never mind," "I quit," "too complicated")
-- User abandons after a long period of non-response
-
-**User Notification Message**:
-> No problem. I've saved the current progress. Here's a summary of what we've accomplished so far:
-> [List of completed stages and outputs]
-> You can re-enter at any time by saying "continue the previous research," and we'll pick up where we left off.
-
-**Handling Steps**:
-1. Save all outputs from the current stage (RQ Brief, INSIGHTs, Bibliography, etc.)
-2. Produce a progress summary
-3. Provide instructions for re-entry
-
-**Recovery Paths**:
-- User says "continue the previous research" → load saved outputs, continue from where interrupted
-- User starts over → entirely new workflow
-
----
-
-### F8: Only Chinese-Language Literature Available
-
-**Affected Modes**: `full` (Phase 2), `lit-review`
+**Affected Modes**: `lit-review` (Phase 2)
 **Severity**: Medium
 
 **Trigger Conditions**:
-- English academic database searches (Web of Science, Scopus, PubMed, etc.) yield empty or very few results
-- The topic is strongly localized (e.g., Taiwan-specific policy, regulations, institutional systems)
+- English academic database searches yield empty or very few results on the cross-field topic
+- The source field has primarily non-English literature
 
 **User Notification Message**:
-> English-language literature on this topic is very limited, but Chinese-language literature resources are abundant. I will adjust the search strategy to include Chinese academic databases. Please note that citation conventions for Chinese-language literature in international publications may differ.
+> English-language literature on this cross-field transfer is very limited. I will adjust the search strategy to include broader databases and preprint servers. The Research Agenda will flag directions that rely on limited-language evidence.
 
 **Handling Steps**:
-1. Switch search strategy to Chinese academic databases (Airiti Library, National Digital Library of Theses and Dissertations in Taiwan, CNKI)
-2. Re-search using Chinese keywords
+1. Expand search to preprint servers (arXiv, bioRxiv, SSRN) and grey literature
+2. Search for adjacent English-language terms that cover the same method family
 3. Note the language distribution of the literature in the report
-4. If the user needs an English report → provide suggestions for English citation format of Chinese literature
-5. If the user needs to publish internationally → suggest finding comparable international cases
+4. If coverage remains thin → mark affected Research Agenda directions as "weak evidence base"
 
 **Recovery Paths**:
-- Chinese literature is sufficient → continue workflow with clear language annotations
-- User needs international publication → suggest adjusting RQ to add a comparative perspective
+- Alternative sources are sufficient → continue workflow with clear language annotations
+- Coverage remains thin → Research Agenda Direction 3 (stretch-exploratory) absorbs this as an evidence gap
 
 ---
 
-### F9: All Source Quality Below Threshold
+### F13: Validator Failure (Post-Emission)
 
-**Affected Modes**: `full` (Phase 2), `fact-check`
+**Affected Modes**: `lit-review` (Phase 4, post-emission)
 **Severity**: High
 
 **Trigger Conditions**:
-- source_verification_agent rates all found sources as Level V or below
-- No peer-reviewed sources
+- `scripts/lit_review_validate.py` exits non-zero after Markdown emission by `report_compiler_agent`
 
 **User Notification Message**:
-> The overall quality of currently found sources is low, lacking high-quality peer-reviewed research. This may indicate an emerging field, or the search strategy may need adjustment. I suggest we consider...
+> The report validator found issues in the generated report. The agent cannot claim completion until these are resolved. Validator output:
+> [stderr from lit_review_validate.py]
 
 **Handling Steps**:
-1. Expand source types (add policy reports, white papers, official statistics)
-2. Lower the threshold but clearly annotate quality levels
-3. Reposition the report as "preliminary exploration" rather than "systematic review"
-4. Add an "Evidence Quality Limitations" section to the report
+1. Report the validator's stderr output to the user verbatim
+2. Do NOT claim the report is complete
+3. Identify which check failed (per-paper blocks, Research Agenda count, Apply/improve template, PDF gate, Research Frame fields)
+4. Fix the identified issue in the report Markdown
+5. Re-run the validator until it exits 0
 
 **Recovery Paths**:
-- Find sufficient alternative sources → continue workflow with clear quality annotations
-- Cannot find qualified sources → suggest the user consider conducting primary research
+- Fix the Markdown and re-validate → proceed to PDF conversion on exit 0
+- If validator check #2 fails (wrong direction count): revise Research Agenda to have exactly 3 directions
+- If validator check #4 fails (template mismatch): ensure each direction's first non-blank line matches `Apply/improve [X] from [Y] to solve [Z] in [Domain]`
 
 ---
 
-### F10: Conclusions Inconsistent with Evidence
+### F14: PDF Toolchain Absent
 
-**Affected Modes**: `full` (Phase 5, Checkpoint 3)
-**Severity**: High
-
-**Trigger Conditions**:
-- editor_in_chief_agent or devils_advocate_agent finds in Phase 5 that report conclusions exceed the scope supported by the evidence
-
-**User Notification Message**:
-> The review found that some conclusions in the report go beyond what the evidence supports. Specifically:
-> [List of issues]
-> I will return for revision to ensure every conclusion has corresponding evidence support.
-
-**Handling Steps**:
-1. Flag all "over-inferred" conclusions
-2. For each flag: (a) weaken the conclusion to match the evidence, or (b) supplement with additional evidence
-3. Re-execute Checkpoint 3
-
-**Recovery Paths**:
-- Revision successful → complete Phase 6
-- Issues remain after revision → 2nd revision round
-- Issues remain after 2 revisions → convert issues to a "Research Limitations" section
-
----
-
-### F11: Revision Loop Exceeds Limit
-
-**Affected Modes**: `full` (Phase 6)
-**Severity**: Medium
-
-**Trigger Conditions**:
-- Phase 6 revision has been executed 2 times (maximum), with unresolved Major issues remaining
-
-**User Notification Message**:
-> After two rounds of revision, the following issues have been resolved: [resolved list]. However, the following issues remain unresolved due to inherent research limitations: [unresolved list]. These will be listed in the "Acknowledged Limitations" section. The report is now the best version achievable under current conditions.
-
-**Handling Steps**:
-1. Compile resolved and unresolved issues
-2. Convert unresolved Major issues into the "Acknowledged Limitations" section
-3. Deliver the final report
-
-**Recovery Paths**:
-- User accepts → deliver the report
-- User does not accept → suggest redesigning the research from Phase 1
-
----
-
-### F12: Interdisciplinary Bridging Failure
-
-**Affected Modes**: `full`
+**Affected Modes**: `lit-review` (Phase 4, PDF conversion)
 **Severity**: Low
 
 **Trigger Conditions**:
-- synthesis_agent attempts interdisciplinary integration but cannot find meaningful connections
-- Conceptual frameworks from different disciplines cannot be reconciled
+- `scripts/md_to_pdf.py` exits with code 2 (pandoc not found)
 
 **User Notification Message**:
-> I attempted to integrate perspectives from [Discipline A] and [Discipline B], but these two disciplines' understanding frameworks for this phenomenon differ substantially. Forcing integration may actually blur the focus. I suggest we center on the [primary discipline] framework, and mention other disciplines' perspectives in the discussion section as reference.
+> PDF generation skipped — pandoc not installed. Markdown saved at `reports/<slug>-<date>.md`. Install via `brew install pandoc` (macOS) or `apt install pandoc` (Linux) and re-run `python3 scripts/md_to_pdf.py --input reports/<slug>-<date>.md`.
 
 **Handling Steps**:
-1. Select the primary disciplinary framework as the analytical foundation
-2. Present other disciplinary perspectives in an "Alternative Perspectives" or "Interdisciplinary Insights" section
-3. Do not force integration of irreconcilable frameworks
+1. Confirm the Markdown file was saved successfully to `reports/<slug>-<date>.md`
+2. Print the install-message warning (this string is also the sentinel for the validator's `--allow-md-only` mode)
+3. Do NOT silently skip — the user must see the warning
 
 **Recovery Paths**:
-- Focus on a single framework → continue workflow
-- User insists on interdisciplinary → suggest switching to mixed-methods or narrative review
+- User installs pandoc → re-run `python3 scripts/md_to_pdf.py --input <path>` to generate the PDF
+- User accepts Markdown-only → the validator accepts this state via `--allow-md-only` when the sentinel is in captured stderr
